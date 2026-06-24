@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Metin — Independent Researcher, Brain Organoid Electrophysiology</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#FAF8F4;
+    --ink:#1B2230;
+    --ink-soft:#3A4150;
+    --burgundy:#6B2A33;
+    --muted:#6B655C;
+    --line:#D9D1C2;
+    --gold:#8E7036;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  body{
+    background:var(--paper);
+    color:var(--ink);
+    font-family:'EB Garamond', Georgia, serif;
+    font-size:18px;
+    line-height:1.65;
+    -webkit-font-smoothing:antialiased;
+  }
+  .page{
+    max-width:660px;
+    margin:0 auto;
+    padding:86px 28px 110px;
+  }
+
+  /* ---------- LETTERHEAD ---------- */
+  .letterhead{
+    text-align:center;
+    margin-bottom:46px;
+  }
+  .name{
+    font-size:40px;
+    font-weight:500;
+    letter-spacing:0.01em;
+    color:var(--ink);
+    margin-bottom:10px;
+  }
+  .role{
+    font-size:15.5px;
+    letter-spacing:0.14em;
+    text-transform:uppercase;
+    color:var(--burgundy);
+    margin-bottom:6px;
+  }
+  .place{
+    font-size:15px;
+    font-style:italic;
+    color:var(--muted);
+  }
+  .rule{
+    width:100%;
+    border:none;
+    border-top:1px solid var(--ink);
+    margin:26px 0 8px;
+  }
+  .rule-thin{
+    width:100%;
+    border:none;
+    border-top:1px solid var(--line);
+    margin:0 0 30px;
+  }
+
+  /* ---------- CONTACT ROW ---------- */
+  .contact{
+    text-align:center;
+    font-size:15px;
+    color:var(--ink-soft);
+    letter-spacing:0.02em;
+  }
+  .contact a{ color:var(--ink-soft); text-decoration:none; border-bottom:1px solid var(--line); display:inline-block; margin:0 2px; }
+  .contact a:hover{ color:var(--burgundy); border-color:var(--burgundy); }
+  .sep{ color:var(--line); margin:0 10px; }
+
+  /* ---------- SECTIONS ---------- */
+  section{ margin-top:52px; }
+  .sec-title{
+    font-size:13.5px;
+    letter-spacing:0.18em;
+    text-transform:uppercase;
+    color:var(--burgundy);
+    text-align:center;
+    margin-bottom:6px;
+  }
+  .sec-rule{
+    width:46px;
+    border:none;
+    border-top:1.5px solid var(--gold);
+    margin:0 auto 32px;
+  }
+
+  p.lede{
+    text-align:center;
+    color:var(--ink-soft);
+    font-size:17.5px;
+    max-width:46ch;
+    margin:0 auto 6px;
+  }
+
+  /* ---------- ENTRY (preprint / repo) ---------- */
+  .entry{
+    margin-bottom:28px;
+    padding-bottom:24px;
+    border-bottom:1px solid var(--line);
+  }
+  .entry:last-child{ border-bottom:none; margin-bottom:0; padding-bottom:0; }
+  .entry-title{
+    font-size:18.5px;
+    font-weight:600;
+    color:var(--ink);
+    margin-bottom:4px;
+  }
+  .entry-meta{
+    font-size:14px;
+    font-style:italic;
+    color:var(--gold);
+    margin-bottom:8px;
+  }
+  .entry-desc{
+    color:var(--ink-soft);
+    font-size:16.5px;
+    margin-bottom:8px;
+  }
+  .entry-link{
+    font-size:14.5px;
+  }
+  .entry-link a{ color:var(--burgundy); text-decoration:none; border-bottom:1px solid transparent; }
+  .entry-link a:hover{ border-bottom-color:var(--burgundy); }
+
+  /* ---------- TWO-COL CODE LIST ---------- */
+  .code-row{
+    display:flex;
+    justify-content:space-between;
+    align-items:baseline;
+    padding:14px 0;
+    border-bottom:1px solid var(--line);
+    gap:18px;
+  }
+  .code-row:last-child{ border-bottom:none; }
+  .code-name{
+    font-weight:600;
+    font-size:17px;
+    color:var(--ink);
+    white-space:nowrap;
+  }
+  .code-desc{
+    color:var(--ink-soft);
+    font-size:15.5px;
+    flex:1;
+  }
+  .code-link a{
+    font-size:14px;
+    color:var(--burgundy);
+    text-decoration:none;
+    border-bottom:1px solid var(--line);
+    white-space:nowrap;
+  }
+  .code-link a:hover{ border-color:var(--burgundy); }
+
+  /* ---------- CLOSING ---------- */
+  .closing{
+    margin-top:60px;
+    text-align:center;
+    font-style:italic;
+    color:var(--muted);
+    font-size:16px;
+    max-width:48ch;
+    margin-left:auto;
+    margin-right:auto;
+  }
+  .seal{
+    text-align:center;
+    margin-top:28px;
+    color:var(--gold);
+    font-size:13px;
+    letter-spacing:0.16em;
+    text-transform:uppercase;
+  }
+
+  @media (max-width:520px){
+    body{ font-size:16.5px; }
+    .name{ font-size:32px; }
+    .page{ padding:56px 20px 80px; }
+    .contact{ line-height:2.4; }
+    .sep{ display:none; }
+    .code-row{ flex-direction:column; gap:4px; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <div class="letterhead">
+    <div class="name">Metin</div>
+    <div class="role">Independent Researcher</div>
+    <div class="place">Brain Organoid Electrophysiology · Aliağa, İzmir, Turkey</div>
+  </div>
+
+  <hr class="rule">
+  <hr class="rule-thin">
+
+  <div class="contact">
+    <a href="mailto:metinmetin1558@gmail.com">Email</a><span class="sep">·</span>
+    <a href="https://orcid.org/0009-0006-4635-405X">ORCID</a><span class="sep">·</span>
+    <a href="https://github.com/Metin1558">GitHub</a><span class="sep">·</span>
+    <a href="https://scholar.google.com/citations?user=chG4PiMAAAAJ">Scholar</a><span class="sep">·</span>
+    <a href="https://www.linkedin.com/in/metin-metin-a80b34410">LinkedIn</a>
+  </div>
+
+  <section>
+    <p class="lede">Building open-source tools and independent analyses of brain organoid electrophysiology — without a laboratory, without institutional affiliation, working from public data and direct platform access.</p>
+  </section>
+
+  <section>
+    <div class="sec-title">Preprints</div>
+    <hr class="sec-rule">
+
+    <div class="entry">
+      <div class="entry-title">Whole-Life Electrophysiological Dynamics of Human Brain Organoids</div>
+      <div class="entry-meta">Evidence from the FinalSpark Neuroplatform with Cross-Dataset Context · 2026</div>
+      <div class="entry-desc">Whole-life MEA recordings of two FinalSpark organoid cultures from birth to activity cessation, cross-referenced against incubator logs to separate artifact from biology, alongside a cross-dataset characterization of 30 subjects from the DANDI Archive.</div>
+      <div class="entry-link"><a href="https://doi.org/10.5281/zenodo.20817496">doi.org/10.5281/zenodo.20817496</a></div>
+    </div>
+
+    <div class="entry">
+      <div class="entry-title">organoid-oi v3</div>
+      <div class="entry-meta">A Biologically Grounded Closed-Loop Framework for Organoid Intelligence Simulation</div>
+      <div class="entry-desc">Three-Factor STDP with reward delivered as 10&nbsp;Hz theta current and penalty as 200&nbsp;Hz noise current. No backpropagation, no shortcuts — every mechanism has a named biological counterpart.</div>
+      <div class="entry-link"><a href="https://doi.org/10.5281/zenodo.20569348">doi.org/10.5281/zenodo.20569348</a></div>
+    </div>
+
+    <div class="entry">
+      <div class="entry-title">UKH: A Three-Layer Hybrid Microelectrode Array Architecture</div>
+      <div class="entry-meta">A Quantitative Coverage Model for Volumetric Recording of Brain Organoids · v2</div>
+      <div class="entry-desc">Surface-only arrays record 0% of a 2&nbsp;mm organoid's inner 80%. A three-layer design recovers total coverage to ~41% and renders cross-layer synchrony measurable for the first time.</div>
+      <div class="entry-link"><a href="https://doi.org/10.5281/zenodo.20498735">doi.org/10.5281/zenodo.20498735</a></div>
+    </div>
+
+    <div class="entry">
+      <div class="entry-title">Axon</div>
+      <div class="entry-meta">A Standardized Open-Source Pipeline for Brain Organoid MEA Electrophysiology · v6.3</div>
+      <div class="entry-desc">An end-to-end analysis pipeline for NWB-formatted recordings — spike sorting, firing rate, coefficient of variation, STTC, and network burst detection. Validated across four public DANDI datasets, 29 subjects.</div>
+      <div class="entry-link"><a href="https://doi.org/10.5281/zenodo.20492811">doi.org/10.5281/zenodo.20492811</a></div>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-title">Code</div>
+    <hr class="sec-rule">
+
+    <div class="code-row">
+      <div class="code-name">axon</div>
+      <div class="code-desc">MEA analysis pipeline</div>
+      <div class="code-link"><a href="https://github.com/Metin1558/axon">repository</a></div>
+    </div>
+    <div class="code-row">
+      <div class="code-name">organoid-oi</div>
+      <div class="code-desc">Closed-loop STDP framework</div>
+      <div class="code-link"><a href="https://github.com/Metin1558/organoid-oi">repository</a></div>
+    </div>
+  </section>
+
+  <div class="closing">Working independently means building the surrounding infrastructure yourself. This page is part of that infrastructure.</div>
+  <div class="seal">No Lab · No Funding · Open Data</div>
+
+</div>
+</body>
+</html>
