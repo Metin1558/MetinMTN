@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Metin — Brain Organoid Electrophysiology</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,500;9..144,600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0B0C0E;
+    --bg2:#111319;
+    --panel:#15171D;
+    --text:#ECEDEF;
+    --dim:#8D939C;
+    --dim2:#5C6168;
+    --line:#23262E;
+    --accent:#5FCBB8;
+    --accent-dim:#2C4F49;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html,body{ background:var(--bg); color:var(--text); overflow:hidden; height:100%; }
+  body{ font-family:'Inter',system-ui,sans-serif; -webkit-font-smoothing:antialiased; }
+  h1,h2,h3{ font-family:'Fraunces',serif; font-weight:500; }
+  a{ color:inherit; }
+  .hide-mobile{ }
+
+  /* ===================== DESKTOP PAGED TRACK ===================== */
+  #track{
+    display:flex;
+    height:100vh;
+    width:300vw;
+    transition:transform .68s cubic-bezier(.65,0,.35,1);
+    will-change:transform;
+  }
+  .page{
+    width:100vw;
+    height:100vh;
+    flex-shrink:0;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:0 7vw;
+    position:relative;
+  }
+  .page-inner{ max-width:1080px; width:100%; }
+
+  /* nav dots */
+  #nav{
+    position:fixed; right:34px; top:50%; transform:translateY(-50%);
+    display:flex; flex-direction:column; gap:14px; z-index:50;
+  }
+  .dot{
+    width:8px; height:8px; border-radius:50%;
+    background:var(--line); cursor:pointer;
+    transition:background .25s, transform .25s;
+    border:none;
+  }
+  .dot.active{ background:var(--accent); transform:scale(1.35); }
+
+  .arrow{
+    position:fixed; top:50%; transform:translateY(-50%);
+    width:46px; height:46px; border-radius:50%;
+    border:1px solid var(--line); background:rgba(255,255,255,0.02);
+    color:var(--dim); font-size:18px;
+    display:flex; align-items:center; justify-content:center;
+    cursor:pointer; z-index:50; transition:border-color .2s, color .2s;
+  }
+  .arrow:hover{ border-color:var(--accent); color:var(--accent); }
+  .arrow.left{ left:28px; }
+  .arrow.right{ right:90px; }
+  .arrow.disabled{ opacity:0; pointer-events:none; }
+
+  .pageno{
+    position:fixed; left:34px; bottom:28px; z-index:50;
+    font-size:12px; letter-spacing:0.12em; color:var(--dim2);
+    font-family:'Inter',sans-serif;
+  }
+  .pageno b{ color:var(--accent); }
+
+  /* ===================== TYPE HELPERS ===================== */
+  .eyebrow{
+    font-size:12.5px; letter-spacing:0.18em; text-transform:uppercase;
+    color:var(--accent); margin-bottom:18px; display:flex; align-items:center; gap:8px;
+  }
+  .eyebrow::before{ content:''; width:6px; height:6px; border-radius:50%; background:var(--accent); }
+
+  /* ===================== PAGE 1 ===================== */
+  #p1{ align-items:flex-start; overflow-y:auto; padding-top:96px; padding-bottom:90px; scrollbar-width:thin; }
+  #p1::-webkit-scrollbar{ width:6px; }
+  #p1::-webkit-scrollbar-thumb{ background:var(--line); border-radius:3px; }
+  #p1 .page-inner{ max-width:740px; }
+  #p1 h1{
+    font-size:clamp(32px,4.6vw,50px);
+    line-height:1.1;
+    max-width:14ch;
+    margin-bottom:32px;
+    color:#fff;
+  }
+  .intro p{ color:var(--dim); font-size:16px; line-height:1.75; max-width:68ch; margin-bottom:18px; }
+  .intro p:last-child{ margin-bottom:0; }
+  .mid-head{
+    margin:46px 0 8px;
+    font-size:12.5px; letter-spacing:0.18em; text-transform:uppercase;
+    color:var(--accent);
+  }
+  .seq-entry{ padding:26px 0; border-top:1px solid var(--line); }
+  .seq-num{ font-family:'Fraunces',serif; color:var(--accent); font-size:13px; letter-spacing:0.08em; display:block; margin-bottom:8px; }
+  .seq-title{ font-size:20px; font-weight:600; color:#fff; margin-bottom:10px; }
+  .seq-desc{ color:var(--dim); font-size:15.5px; line-height:1.75; margin-bottom:12px; max-width:64ch; }
+  .seq-link a{ font-size:12.5px; color:var(--accent); text-decoration:none; border-bottom:1px solid var(--accent-dim); }
+  .seq-bridge{ color:var(--dim2); font-style:italic; font-size:14.5px; margin-top:10px; }
+
+  /* old grid (kept for compatibility, unused now) */
+  .works{ display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+  .work{
+    border:1px solid var(--line); border-radius:10px; padding:20px 22px;
+    background:linear-gradient(180deg, rgba(255,255,255,0.015), transparent);
+    transition:border-color .2s, transform .2s;
+  }
+  .work:hover{ border-color:var(--accent-dim); transform:translateY(-2px); }
+  .work .wt{ font-weight:600; font-size:15.5px; margin-bottom:6px; }
+  .work .wd{ font-size:13.5px; color:var(--dim); margin-bottom:10px; line-height:1.5; }
+  .work a{ font-size:12px; color:var(--accent); text-decoration:none; border-bottom:1px solid var(--accent-dim); }
+
+  /* ===================== PAGE 2 ===================== */
+  #p2 .page-inner{ display:grid; grid-template-columns:1.05fr 1fr; gap:64px; align-items:center; }
+  #p2 h2{ font-size:clamp(26px,3.4vw,36px); color:#fff; margin-bottom:18px; max-width:16ch; }
+  #p2 p{ color:var(--dim); font-size:15.5px; margin-bottom:18px; max-width:48ch; }
+
+  .steps{ display:flex; align-items:center; margin:30px 0 8px; }
+  .step{ text-align:center; flex:1; position:relative; }
+  .step .c{
+    width:34px; height:34px; border-radius:50%; margin:0 auto 8px;
+    background:var(--panel); border:1.5px solid var(--accent-dim);
+    display:flex; align-items:center; justify-content:center;
+    font-size:13px; color:var(--accent); font-weight:600;
+  }
+  .step .l{ font-size:11px; color:var(--dim2); line-height:1.3; max-width:9ch; margin:0 auto; }
+  .step::after{
+    content:''; position:absolute; top:17px; left:50%; width:100%; height:1px;
+    background:var(--line); z-index:-1;
+  }
+  .step:last-child::after{ display:none; }
+
+  .viz-wrap{ display:flex; flex-direction:column; align-items:center; }
+  .toggle{
+    display:flex; gap:6px; padding:4px; background:var(--panel);
+    border:1px solid var(--line); border-radius:30px; margin-bottom:22px;
+  }
+  .toggle button{
+    border:none; background:transparent; color:var(--dim);
+    font-family:'Inter',sans-serif; font-size:12.5px; font-weight:500;
+    padding:8px 16px; border-radius:24px; cursor:pointer; transition:.2s;
+  }
+  .toggle button.active{ background:var(--accent); color:#04201C; }
+  .stat-line{ display:flex; gap:26px; margin-top:18px; }
+  .stat-line div{ text-align:center; }
+  .stat-line .n{ font-size:22px; font-weight:600; color:var(--accent); font-family:'Fraunces',serif; }
+  .stat-line .l{ font-size:11px; color:var(--dim2); margin-top:2px; }
+
+  /* ===================== PAGE 3 ===================== */
+  #p3 .page-inner{ display:grid; grid-template-columns:1fr 1fr; gap:60px; align-items:center; }
+  #p3 h2{ font-size:clamp(28px,3.6vw,40px); color:#fff; margin-bottom:16px; }
+  #p3 p.about{ color:var(--dim); font-size:15.5px; max-width:44ch; margin-bottom:26px; }
+  .sig{ border-top:1px solid var(--line); padding-top:22px; }
+  .sig .role{ font-size:12px; letter-spacing:0.14em; text-transform:uppercase; color:var(--accent); margin-bottom:4px; }
+  .sig .nm{ font-family:'Fraunces',serif; font-size:26px; color:#fff; margin-bottom:18px; }
+  .links{ display:flex; flex-direction:column; gap:10px; }
+  .links a{
+    font-size:14.5px; text-decoration:none; color:var(--text);
+    border-bottom:1px solid var(--line); padding-bottom:8px;
+    display:flex; justify-content:space-between; transition:color .2s, border-color .2s;
+  }
+  .links a:hover{ color:var(--accent); border-color:var(--accent-dim); }
+  .links a span{ color:var(--dim2); font-size:12px; }
+  .code-block{
+    border:1px solid var(--line); border-radius:10px; padding:18px 20px; margin-top:24px;
+  }
+  .code-block .ct{ font-size:11px; letter-spacing:0.1em; text-transform:uppercase; color:var(--dim2); margin-bottom:10px; }
+  .code-row{ display:flex; justify-content:space-between; padding:7px 0; font-size:14px; }
+  .code-row a{ color:var(--accent); text-decoration:none; font-size:12.5px; }
+
+  /* ===================== MOBILE FALLBACK ===================== */
+  @media (max-width:860px){
+    html,body{ overflow-y:auto; height:auto; }
+    #track{ display:block; width:100%; height:auto; transform:none !important; }
+    .page{ width:100%; height:auto; min-height:100vh; padding:90px 24px 70px; }
+    #p1{ height:auto; overflow-y:visible; padding-top:90px; }
+    #nav, .arrow, .pageno{ display:none; }
+    #p2 .page-inner, #p3 .page-inner{ grid-template-columns:1fr; gap:40px; }
+    .works{ grid-template-columns:1fr; }
+    .steps{ flex-wrap:wrap; gap:14px 0; }
+  }
+</style>
+</head>
+<body>
+
+<div id="track">
+
+  <!-- ============ PAGE 1 ============ -->
+  <section class="page" id="p1">
+    <div class="page-inner">
+      <div class="eyebrow">Organoid Intelligence</div>
+      <h1>Brain tissue that generates its own electricity.</h1>
+
+      <div class="intro">
+        <p>A brain organoid begins as a small population of human stem cells — often reprogrammed from an ordinary blood or skin sample — guided through the same chemical signaling steps that direct a developing brain. Over the course of several weeks, those cells differentiate into neurons and supporting glial cells, and self-organize into a three-dimensional structure a few millimetres across, roughly the size of a lentil. There is no skull, no body, no senses, no environment to act in. What there is, reliably and reproducibly, is electrical activity.</p>
+
+        <p>That activity does not appear all at once, and it does not stay the same. Early cultures fire sparsely, with little structure. Over weeks to months, recordings begin to show coordinated bursts — many neurons firing together, falling silent, then firing again — a signature of maturing connectivity that has been tracked since some of the field's earliest published recordings. An organoid is not thinking in any sense comparable to a brain embedded in a body with a world to respond to. But it is computing something: a living network turning electrical and chemical input into structured, time-varying output.</p>
+
+        <p>To see that output, researchers place the organoid onto a microelectrode array (MEA) — a grid of electrodes listening for the electrical signature of nearby firing neurons. The result is a dense stream of spike data: which electrode, at what time, at what amplitude. Turning that stream into something interpretable — firing rate, synchrony between regions, network bursts, large-scale structure — is itself a substantial computational problem, and one with very little standardization between labs.</p>
+
+        <p>In 2023, a research group at Johns Hopkins proposed organoid intelligence (OI) as a field in its own right: using brain organoids not only as disease models, but as a substrate for biological computing, testing whether structured information processing — and eventually learning — can be supported by living neural tissue outside a body. Part of the motivation is practical. A human brain runs on roughly twenty watts, a small fraction of what comparable artificial systems require, and biological tissue offers a fundamentally different kind of computational substrate to study and compare against silicon. Part of the motivation is scientific: organoids let researchers ask developmental and computational questions about neural tissue that are difficult, or simply impossible, to ask inside a living human brain.</p>
+
+        <p>The field is young. Its first widely cited organoid electrophysiology recordings date to 2019, and as of 2026 there is still no standard analysis pipeline, no agreed file format, and very little publicly available data to work with. The four projects below are an attempt to work inside that gap — building the tools the field is missing, characterizing what real recordings actually look like over time, and identifying exactly where the standard recording method falls short.</p>
+      </div>
+
+      <div class="mid-head">Four Projects, In Sequence</div>
+
+      <div class="seq-entry">
+        <span class="seq-num">01 — Reading the signal</span>
+        <div class="seq-title">Axon</div>
+        <div class="seq-desc">The first problem is mundane but blocking: every lab records organoid activity differently. Some publish pre-sorted spike tables; others publish raw voltage traces that still need spike sorting before they mean anything at all; file structures vary enough that comparing two datasets usually means writing two separate analysis scripts from scratch. Axon is an open-source pipeline built to remove that friction. It reads NWB-formatted recordings end-to-end, runs spike sorting through SpikeInterface when only raw signal is available, and computes a standard set of metrics — firing rate, inter-spike interval variability, pairwise synchrony via the spike time tiling coefficient, network burst detection, graph-level network topology — regardless of which format the data arrived in. It has been validated across 29 subjects spanning four public DANDI Archive datasets.</div>
+        <div class="seq-link"><a href="https://doi.org/10.5281/zenodo.20492811">doi.org/10.5281/zenodo.20492811</a></div>
+      </div>
+
+      <div class="seq-entry">
+        <span class="seq-num">02 — Shaping the signal</span>
+        <div class="seq-title">organoid-oi v3</div>
+        <div class="seq-desc">Reading activity reliably opens a second question: can an organoid's network be shaped — not just observed, but nudged toward a particular pattern through reward and penalty, the way a developing brain learns from consequence? organoid-oi v3 is a closed-loop simulation framework built to test that idea computationally before attempting it on real tissue. It implements Three-Factor spike-timing-dependent plasticity, with reward delivered as a 10&nbsp;Hz theta current and penalty as a 200&nbsp;Hz noise current — biologically motivated mechanisms rather than externally forced weight updates. No backpropagation, no gradient, no shortcut: every part of the learning rule has a named biological counterpart, and a freeze-weights control test confirms that STDP — not the decoder — is what is actually doing the learning.</div>
+        <div class="seq-link"><a href="https://doi.org/10.5281/zenodo.20569348">doi.org/10.5281/zenodo.20569348</a></div>
+      </div>
+
+      <div class="seq-entry">
+        <span class="seq-num">03 — Watching a real culture live</span>
+        <div class="seq-title">Whole-Life Dynamics</div>
+        <div class="seq-desc">Closed-loop simulation is one kind of evidence; long, continuous recordings of a real culture are another. Through the FinalSpark Neuroplatform, a cloud-accessible recording system, two organoid cultures from the same neurosphere batch were tracked from their first recorded activity to the point each stopped firing — 6.4 days for one, 21.7 days for the other. Their baseline firing rates differed by roughly 35-fold despite the shared origin. One culture showed a large, otherwise unexplained rise in spike amplitude in the days before its activity ceased; a separate amplitude spike in the second culture was fully explained by a logged incubator door-opening event — a reminder that long-duration recordings need to be checked against equipment logs before any change in the data is read as biology.</div>
+        <div class="seq-link"><a href="https://doi.org/10.5281/zenodo.20817496">doi.org/10.5281/zenodo.20817496</a></div>
+      </div>
+
+      <div class="seq-entry">
+        <span class="seq-num">04 — Questioning the recording itself</span>
+        <div class="seq-title">UKH</div>
+        <div class="seq-desc">All three projects above assume the recording captures the organoid's activity in the first place. Mostly, it doesn't. A standard microelectrode array is flat; an organoid is not. Placed on a surface array, an organoid is read only where it touches the electrodes — its outer shell. A physics-based model of this geometry shows that a typical surface array reaches roughly 14% of the neurons in a 2&nbsp;mm organoid, and almost none of the inner 80% of its volume. UKH is a proposed three-layer recording architecture — a surface array, a flexible mesh layer grown into the tissue during development, and a central probe — designed to close that gap. The model shows it raising total coverage to roughly 41%, and, more importantly, making it possible to measure synchrony between an organoid's surface and its core for the first time.</div>
+        <div class="seq-link"><a href="https://doi.org/10.5281/zenodo.20498735">doi.org/10.5281/zenodo.20498735</a></div>
+        <div class="seq-bridge">What that coverage gap actually looks like is easier to see than to describe — turn the page.</div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ============ PAGE 2 ============ -->
+  <section class="page" id="p2">
+    <div class="page-inner">
+      <div>
+        <div class="eyebrow">How an Organoid Comes To Be</div>
+        <h2>From a blood draw to a firing neural network.</h2>
+        <p>A small blood sample is reprogrammed into stem cells, then guided to differentiate into neural tissue. Over weeks, the cells self-organize into a three-dimensional structure and begin producing spontaneous electrical activity — the same fundamental signal used throughout the human brain.</p>
+
+        <div class="steps">
+          <div class="step"><div class="c">1</div><div class="l">Blood cells</div></div>
+          <div class="step"><div class="c">2</div><div class="l">Reprogrammed to stem cells</div></div>
+          <div class="step"><div class="c">3</div><div class="l">Neural differentiation</div></div>
+          <div class="step"><div class="c">4</div><div class="l">3D self-organization</div></div>
+          <div class="step"><div class="c">5</div><div class="l">Spontaneous activity</div></div>
+        </div>
+
+        <p style="margin-top:26px;">A microelectrode array (MEA) records this activity — but a flat array only touches the organoid's surface. Toggle the view to see how much of the tissue a recording method can actually reach.</p>
+      </div>
+
+      <div class="viz-wrap">
+        <div class="toggle">
+          <button id="btn-surface" class="active">Surface-only MEA</button>
+          <button id="btn-ukh">UKH 3-Layer</button>
+        </div>
+        <canvas id="organoid-viz" width="340" height="340"></canvas>
+        <div class="stat-line">
+          <div><div class="n" id="stat-pct">14%</div><div class="l">neurons recorded</div></div>
+          <div><div class="n" id="stat-core">0%</div><div class="l">inner core reached</div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ PAGE 3 ============ -->
+  <section class="page" id="p3">
+    <div class="page-inner">
+      <div>
+        <div class="eyebrow">About</div>
+        <h2>Independent, by necessity and by choice.</h2>
+        <p class="about">I work without a laboratory, without institutional funding, and without formal academic affiliation — using public datasets (DANDI Archive) and direct data access granted by research platforms (FinalSpark Neuroplatform). Based in Aliağa, İzmir, Turkey.</p>
+
+        <div class="code-block">
+          <div class="ct">Code</div>
+          <div class="code-row"><span>axon — MEA analysis pipeline</span><a href="https://github.com/Metin1558/axon">repository →</a></div>
+          <div class="code-row"><span>organoid-oi — closed-loop STDP</span><a href="https://github.com/Metin1558/organoid-oi">repository →</a></div>
+        </div>
+      </div>
+
+      <div class="sig">
+        <div class="role">Independent Researcher</div>
+        <div class="nm">Metin</div>
+        <div class="links">
+          <a href="mailto:metinmetin1558@gmail.com">metinmetin1558@gmail.com <span>email</span></a>
+          <a href="https://orcid.org/0009-0006-4635-405X">0009-0006-4635-405X <span>orcid</span></a>
+          <a href="https://github.com/Metin1558">github.com/Metin1558 <span>code</span></a>
+          <a href="https://scholar.google.com/citations?user=chG4PiMAAAAJ">Google Scholar <span>citations</span></a>
+          <a href="https://www.linkedin.com/in/metin-metin-a80b34410">LinkedIn <span>profile</span></a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<div id="nav">
+  <button class="dot active" data-i="0"></button>
+  <button class="dot" data-i="1"></button>
+  <button class="dot" data-i="2"></button>
+</div>
+<div class="arrow left disabled" id="arrowLeft">‹</div>
+<div class="arrow right" id="arrowRight">›</div>
+<div class="pageno"><b id="pnow">01</b> / 03</div>
+
+<script>
+/* ---------------- Paging navigation (desktop) ---------------- */
+(function(){
+  const track = document.getElementById('track');
+  const dots = document.querySelectorAll('.dot');
+  const arrowL = document.getElementById('arrowLeft');
+  const arrowR = document.getElementById('arrowRight');
+  const pnow = document.getElementById('pnow');
+  let idx = 0;
+  const N = 3;
+  let locked = false;
+
+  function isDesktop(){ return window.innerWidth > 860; }
+
+  function go(i){
+    const prev = idx;
+    idx = Math.max(0, Math.min(N-1, i));
+    if(isDesktop()){
+      track.style.transform = `translateX(-${idx*100}vw)`;
+    }
+    if(idx===0 && prev!==0){
+      const p1el = document.getElementById('p1');
+      if(p1el) p1el.scrollTop = 0;
+    }
+    dots.forEach((d,j)=>d.classList.toggle('active', j===idx));
+    arrowL.classList.toggle('disabled', idx===0);
+    arrowR.classList.toggle('disabled', idx===N-1);
+    pnow.textContent = String(idx+1).padStart(2,'0');
+  }
+
+  dots.forEach(d=>d.addEventListener('click', ()=>go(parseInt(d.dataset.i))));
+  arrowL.addEventListener('click', ()=>go(idx-1));
+  arrowR.addEventListener('click', ()=>go(idx+1));
+
+  window.addEventListener('keydown', (e)=>{
+    if(!isDesktop()) return;
+    if(e.key==='ArrowRight') go(idx+1);
+    if(e.key==='ArrowLeft') go(idx-1);
+  });
+
+  window.addEventListener('wheel', (e)=>{
+    if(!isDesktop()) return;
+    if(Math.abs(e.deltaY) < 12) return;
+    if(locked) return;
+
+    if(idx===0){
+      const p1el = document.getElementById('p1');
+      const atTop = p1el.scrollTop <= 2;
+      const atBottom = p1el.scrollTop + p1el.clientHeight >= p1el.scrollHeight - 2;
+      if(e.deltaY>0 && !atBottom) return;   // still room to scroll down inside page 1
+      if(e.deltaY<0) return;                 // scrolling up inside page 1 (or already at top) — never auto-page backward from page 1
+    }
+
+    locked = true;
+    go(idx + (e.deltaY>0 ? 1 : -1));
+    setTimeout(()=>locked=false, 700);
+  }, {passive:true});
+
+  let touchStartX = 0;
+  window.addEventListener('touchstart', e=>{ touchStartX = e.touches[0].clientX; });
+  window.addEventListener('touchend', e=>{
+    if(!isDesktop()) return;
+    const dx = e.changedTouches[0].clientX - touchStartX;
+    if(Math.abs(dx) > 60) go(idx + (dx<0 ? 1 : -1));
+  });
+
+  window.addEventListener('resize', ()=>go(idx));
+  go(0);
+})();
+
+/* ---------------- Organoid / MEA coverage visualization ---------------- */
+(function(){
+  const canvas = document.getElementById('organoid-viz');
+  const ctx = canvas.getContext('2d');
+  const W = canvas.width, H = canvas.height;
+  const cx = W/2, cy = H/2, R = 142;
+
+  // Deterministic pseudo-random neuron cloud
+  function seededRandom(seed){ let s = seed; return ()=>{ s = (s*9301+49297)%233280; return s/233280; }; }
+  const rng = seededRandom(42);
+
+  const neurons = [];
+  for(let i=0;i<420;i++){
+    const a = rng()*Math.PI*2;
+    const r = Math.sqrt(rng())*R;
+    const x = cx + Math.cos(a)*r;
+    const y = cy + Math.sin(a)*r;
+    const depth = r/R; // 0 = core, 1 = surface
+    neurons.push({x,y,depth});
+  }
+
+  let mode = 'surface'; // 'surface' | 'ukh'
+
+  function recorded(n){
+    if(mode==='surface'){
+      return n.depth > 0.93; // outer ring ≈ 14% of area, matches published surface-only figure
+    } else {
+      // UKH: same outer ring (K1) + two inner mesh shells (K2) + core sliver (K3)
+      return n.depth > 0.93 ||
+             (n.depth > 0.58 && n.depth < 0.70) ||
+             (n.depth > 0.32 && n.depth < 0.42) ||
+             n.depth < 0.14;
+    }
+  }
+
+  function drawElectrodes(){
+    ctx.strokeStyle = 'rgba(95,203,184,0.35)';
+    ctx.lineWidth = 1;
+    // surface ticks
+    const nTicks = 28;
+    for(let i=0;i<nTicks;i++){
+      const a = (i/nTicks)*Math.PI*2;
+      const x1 = cx+Math.cos(a)*(R+4), y1=cy+Math.sin(a)*(R+4);
+      const x2 = cx+Math.cos(a)*(R+11), y2=cy+Math.sin(a)*(R+11);
+      ctx.beginPath(); ctx.moveTo(x1,y1); ctx.lineTo(x2,y2); ctx.stroke();
+    }
+    if(mode==='ukh'){
+      // mesh shell rings (dashed)
+      ctx.save();
+      ctx.setLineDash([3,4]);
+      ctx.strokeStyle = 'rgba(95,203,184,0.45)';
+      [0.64, 0.37].forEach(f=>{
+        ctx.beginPath(); ctx.arc(cx,cy,R*f,0,Math.PI*2); ctx.stroke();
+      });
+      ctx.restore();
+      // central probe line
+      ctx.strokeStyle = 'rgba(95,203,184,0.6)';
+      ctx.beginPath(); ctx.moveTo(cx, cy-R*0.9); ctx.lineTo(cx, cy+R*0.9); ctx.stroke();
+    }
+  }
+
+  let t = 0;
+  function draw(){
+    ctx.clearRect(0,0,W,H);
+    // outer boundary
+    ctx.beginPath(); ctx.arc(cx,cy,R,0,Math.PI*2);
+    ctx.strokeStyle = 'rgba(255,255,255,0.08)';
+    ctx.lineWidth = 1.4; ctx.stroke();
+
+    drawElectrodes();
+
+    for(const n of neurons){
+      const rec = recorded(n);
+      let alpha = rec ? 0.55 : 0.16;
+      if(rec){
+        const pulse = 0.25*Math.sin(t*0.06 + n.x*0.5 + n.y*0.3);
+        alpha = Math.max(0.35, Math.min(1, alpha + pulse));
+      }
+      ctx.beginPath();
+      ctx.arc(n.x, n.y, rec?2.1:1.5, 0, Math.PI*2);
+      ctx.fillStyle = rec ? `rgba(95,203,184,${alpha})` : `rgba(255,255,255,${alpha*0.5})`;
+      ctx.fill();
+    }
+    t++;
+    requestAnimationFrame(draw);
+  }
+  draw();
+
+  function updateStats(){
+    const total = neurons.length;
+    const rec = neurons.filter(recorded).length;
+    const core = neurons.filter(n=>n.depth<0.2);
+    const coreRec = core.filter(recorded).length;
+    document.getElementById('stat-pct').textContent = Math.round(rec/total*100)+'%';
+    document.getElementById('stat-core').textContent = core.length? Math.round(coreRec/core.length*100)+'%' : '0%';
+  }
+  updateStats();
+
+  const bS = document.getElementById('btn-surface');
+  const bU = document.getElementById('btn-ukh');
+  bS.addEventListener('click', ()=>{ mode='surface'; bS.classList.add('active'); bU.classList.remove('active'); updateStats(); });
+  bU.addEventListener('click', ()=>{ mode='ukh'; bU.classList.add('active'); bS.classList.remove('active'); updateStats(); });
+})();
+</script>
+
+</body>
+</html>
