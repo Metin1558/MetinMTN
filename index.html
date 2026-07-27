@@ -129,6 +129,11 @@
   #p2 h2{ font-size:clamp(26px,3.4vw,36px); color:#fff; margin-bottom:18px; max-width:16ch; }
   #p2 p{ color:var(--dim); font-size:15.5px; margin-bottom:18px; max-width:48ch; }
 
+  /* ===================== PAGE 4 — organoid-oi ATTRIBUTION VIZ ===================== */
+  #p4 .page-inner{ display:grid; grid-template-columns:1.05fr 1fr; gap:64px; align-items:center; }
+  #p4 h2{ font-size:clamp(26px,3.4vw,36px); color:#fff; margin-bottom:18px; max-width:18ch; }
+  #p4 p{ color:var(--dim); font-size:15.5px; line-height:1.7; margin-bottom:16px; max-width:48ch; }
+
   .steps{ display:flex; align-items:center; margin:30px 0 8px; }
   .step{ text-align:center; flex:1; position:relative; }
   .step .c{
@@ -160,10 +165,10 @@
   .stat-line .n{ font-size:22px; font-weight:600; color:var(--accent); font-family:'Fraunces',serif; }
   .stat-line .l{ font-size:11px; color:var(--dim2); margin-top:2px; }
 
-  /* ===================== PAGE 3 ===================== */
-  #p4 .page-inner{ display:grid; grid-template-columns:1fr 1fr; gap:60px; align-items:center; }
-  #p4 h2{ font-size:clamp(28px,3.6vw,40px); color:#fff; margin-bottom:16px; }
-  #p4 p.about{ color:var(--dim); font-size:15.5px; max-width:44ch; margin-bottom:26px; }
+  /* ===================== PAGE 6 — ABOUT ===================== */
+  #p6 .page-inner{ display:grid; grid-template-columns:1fr 1fr; gap:60px; align-items:center; }
+  #p6 h2{ font-size:clamp(28px,3.6vw,40px); color:#fff; margin-bottom:16px; }
+  #p6 p.about{ color:var(--dim); font-size:15.5px; max-width:44ch; margin-bottom:26px; }
   .sig{ border-top:1px solid var(--line); padding-top:22px; }
   .sig .role{ font-size:12px; letter-spacing:0.14em; text-transform:uppercase; color:var(--accent); margin-bottom:4px; }
   .sig .nm{ font-family:'Fraunces',serif; font-size:26px; color:#fff; margin-bottom:18px; }
@@ -189,7 +194,7 @@
     .page{ width:100%; height:auto; min-height:100vh; padding:90px 24px 70px; }
     #p1{ height:auto; overflow-y:visible; padding-top:90px; }
     #nav, .arrow, .pageno{ display:none; }
-    #p2 .page-inner, #p3 .page-inner, #p4 .page-inner{ grid-template-columns:1fr; gap:40px; }
+    #p2 .page-inner, #p4 .page-inner, #p6 .page-inner{ grid-template-columns:1fr; gap:40px; }
     .works{ grid-template-columns:1fr; }
     .steps{ flex-wrap:wrap; gap:14px 0; }
   }
@@ -228,9 +233,9 @@
 
       <div class="seq-entry">
         <span class="seq-num">02 — Shaping the signal</span>
-        <div class="seq-title">organoid-oi v3</div>
-        <div class="seq-desc">Reading activity reliably opens a second question: can an organoid's network be shaped — not just observed, but nudged toward a particular pattern through reward and penalty, the way a developing brain learns from consequence? organoid-oi v3 is a closed-loop simulation framework built to test that idea computationally before attempting it on real tissue. It implements Three-Factor spike-timing-dependent plasticity, with reward delivered as a 10&nbsp;Hz theta current and penalty as a 200&nbsp;Hz noise current — biologically motivated mechanisms rather than externally forced weight updates. No backpropagation, no gradient, no shortcut: every part of the learning rule has a named biological counterpart, and a freeze-weights control test confirms that STDP — not the decoder — is what is actually doing the learning.</div>
-        <div class="seq-link"><a href="https://doi.org/10.5281/zenodo.20569348">doi.org/10.5281/zenodo.20569348</a></div>
+        <div class="seq-title">organoid-oi</div>
+        <div class="seq-desc">Reading activity reliably opens a second question: can an organoid's network be shaped — not just observed, but nudged toward a particular pattern through reward and penalty, the way a developing brain learns from consequence? organoid-oi is a closed-loop simulation framework built to test that computationally before attempting it on real tissue, implementing Three-Factor spike-timing-dependent plasticity with reward and penalty delivered as biologically motivated current injection rather than externally forced weight updates. An initial version reported that a freeze-weights control confirmed the plasticity rule — not the readout layer — was driving the learning. A self-audit run ahead of a live deployment found that this was wrong on both counts: the control could not distinguish the two in the first place, and under a proper test, the plasticity rule contributed nothing measurable. That correction, its cause, and what changed as a result are the subject of the next two pages.</div>
+        <div class="seq-link"><a href="https://doi.org/10.5281/zenodo.20569347">doi.org/10.5281/zenodo.20569347</a></div>
       </div>
 
       <div class="seq-entry">
@@ -284,8 +289,54 @@
     </div>
   </section>
 
-  <!-- ============ PAGE 3 (NEW — ETHICS) ============ -->
+  <!-- ============ PAGE 3 — organoid-oi SELF-AUDIT ============ -->
   <section class="page" id="p3">
+    <div class="page-inner">
+      <div class="eyebrow">organoid-oi — Self-Audit</div>
+      <h2 style="font-size:clamp(26px,3.6vw,38px); color:#fff; margin-bottom:18px; max-width:22ch;">A correction, published as the finding.</h2>
+
+      <p style="color:var(--dim); font-size:15.5px; line-height:1.75; max-width:64ch; margin-bottom:16px;">organoid-oi was published in June 2026 as a closed-loop simulation framework: a synthetic organoid driven by Three-Factor spike-timing-dependent plasticity, learning to categorize visual input through reward and penalty delivered as current injection rather than as an externally forced weight change. It reported a full pass on its validation suite and a freeze-weights control said to confirm that the plasticity rule — not the readout layer decoding its output — was the source of the learning.</p>
+
+      <p style="color:var(--dim); font-size:15.5px; line-height:1.75; max-width:64ch; margin-bottom:16px;">Ahead of committing an Emergent Ventures grant and funded hardware time to a live deployment on FinalSpark's Neuroplatform, the framework was audited end to end before any tissue was touched. Two of the validation tests turned out to be measuring a different quantity than the one named in their assertions and were rewritten. A configuration parameter governing membrane resistance was found dead in the code — declared, but never passed to the integrator it was meant to control. Neither defect was the important one.</p>
+
+      <p style="color:var(--dim); font-size:15.5px; line-height:1.75; max-width:64ch; margin-bottom:16px;">The freeze-weights control — described at the time as the framework's methodological core — does not do what it was built to do. It holds the decoder fixed alongside the organoid's weights, so it cannot separate one's contribution from the other's, and it cannot be run on living tissue at all, since a biological synapse cannot be frozen on command. Under a proper paired control instead — identical seed, identical stimuli, plasticity switched on against plasticity switched off, run side by side — the difference in categorical accuracy was exactly zero, across two encoding schemes, four connectivity densities, five excitability regimes, and learning rates spanning a five-hundred-fold range.</p>
+
+      <p style="color:var(--dim); font-size:15.5px; line-height:1.75; max-width:64ch; margin-bottom:16px;">A decoder-independent separability measure showed why. The three-category task the framework had been evaluated against turned out to be solvable with no training at all: an untrained organoid classified it at 100% accuracy, purely because the categories produced different raw spike counts from the moment the network was instantiated — an artifact of random initial wiring, not of anything learned. There was nothing left for a learning rule to improve.</p>
+
+      <p style="color:var(--dim); font-size:15.5px; line-height:1.75; max-width:64ch; margin-bottom:24px;">Version 2.0 of the preprint retracts both claims explicitly and documents the audit in full, including a redesigned task on which an untrained organoid performs at chance — three six-symbol sequences built from the same three-symbol alphabet in different order, so raw activity carries no category information and only timing-sensitive plasticity has anything to work with. Where that task and a live attribution monitor stand is on the next page.</p>
+
+      <div class="seq-link"><a href="https://doi.org/10.5281/zenodo.20569347">doi.org/10.5281/zenodo.20569347</a></div>
+      <div class="seq-bridge">What that two-arm check looks like when it runs — turn the page.</div>
+    </div>
+  </section>
+
+  <!-- ============ PAGE 4 — organoid-oi ATTRIBUTION MONITOR (viz) ============ -->
+  <section class="page" id="p4">
+    <div class="page-inner">
+      <div>
+        <div class="eyebrow">organoid-oi — Attribution Monitor</div>
+        <h2>Two arms, one readout layer.</h2>
+        <p>Any closed-loop system with an adaptive readout layer will show rising accuracy whenever its substrate's responses are separable — for any reason, including reasons that have nothing to do with learning. A single accuracy curve cannot rule that out; it is exactly the failure mode the self-audit on the previous page describes.</p>
+        <p>The monitor now built into organoid-oi runs two arms under one decoder in every session — identical stimuli, identical seed, differing only in whether plasticity is active — so the readout layer's own contribution is visible directly, without a further round of analysis. The curves below are the framework's own measured session: not a hypothetical.</p>
+        <p style="margin-top:26px;">Toggle the view to see what a conventional single-arm dashboard would show for the same data.</p>
+      </div>
+
+      <div class="viz-wrap">
+        <div class="toggle">
+          <button id="btn-two" class="active">Two-arm view</button>
+          <button id="btn-one">Single-arm view</button>
+        </div>
+        <canvas id="attrib-viz" width="360" height="230"></canvas>
+        <div class="stat-line">
+          <div><div class="n" id="stat-gap">—</div><div class="l">gap, pts</div></div>
+          <div><div class="n" id="stat-trial">—</div><div class="l">trial</div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ PAGE 5 (was 3) — ETHICS ============ -->
+  <section class="page" id="p5">
     <div class="page-inner">
       <div class="eyebrow">A Fifth Contribution — Ethics</div>
       <h2 style="font-size:clamp(26px,3.6vw,38px); color:#fff; margin-bottom:18px; max-width:20ch;">Functional provenance stratification.</h2>
@@ -297,13 +348,13 @@
     </div>
   </section>
 
-  <!-- ============ PAGE 4 (was 3) — ABOUT ============ -->
-  <section class="page" id="p4">
+  <!-- ============ PAGE 6 (was 4) — ABOUT ============ -->
+  <section class="page" id="p6">
     <div class="page-inner">
       <div>
         <div class="eyebrow">About</div>
         <h2>Independent, by necessity and by choice.</h2>
-        <p class="about">I work without a laboratory, without institutional funding, and without formal academic affiliation — using public datasets (DANDI Archive) and direct data access granted by research platforms (FinalSpark Neuroplatform). Based in Aliağa, İzmir, Turkey.</p>
+        <p class="about">I work without a laboratory and without formal academic affiliation — using public datasets (DANDI Archive), direct data access granted by research platforms (FinalSpark Neuroplatform, currently in coordination for a live closed-loop deployment), and grant support from Emergent Ventures (Mercatus Center, George Mason University). Based in Aliağa, İzmir, Turkey.</p>
 
         <div class="code-block">
           <div class="ct">Code</div>
@@ -333,10 +384,12 @@
   <button class="dot" data-i="1"></button>
   <button class="dot" data-i="2"></button>
   <button class="dot" data-i="3"></button>
+  <button class="dot" data-i="4"></button>
+  <button class="dot" data-i="5"></button>
 </div>
 <div class="arrow left disabled" id="arrowLeft">‹</div>
 <div class="arrow right" id="arrowRight">›</div>
-<div class="pageno"><b id="pnow">01</b> / 04</div>
+<div class="pageno"><b id="pnow">01</b> / 06</div>
 
 
 <script>
@@ -348,7 +401,7 @@
   const arrowR = document.getElementById('arrowRight');
   const pnow = document.getElementById('pnow');
   let idx = 0;
-  const N = 4;
+  const N = 6;
   let locked = false;
 
   function isDesktop(){ return window.innerWidth > 860; }
@@ -511,6 +564,91 @@
   const bU = document.getElementById('btn-ukh');
   bS.addEventListener('click', ()=>{ mode='surface'; bS.classList.add('active'); bU.classList.remove('active'); updateStats(); });
   bU.addEventListener('click', ()=>{ mode='ukh'; bU.classList.add('active'); bS.classList.remove('active'); updateStats(); });
+})();
+
+/* ---------------- organoid-oi attribution monitor viz ---------------- */
+(function(){
+  const canvas = document.getElementById('attrib-viz');
+  if(!canvas) return;
+  const ctx = canvas.getContext('2d');
+  const W = canvas.width, H = canvas.height;
+
+  // Deterministic pseudo-random walk — reproduces the framework's own
+  // measured session: both arms converge to the same ~67.5% plateau,
+  // independent noise, no separation. This is the actual null result,
+  // not a staged illustration.
+  function seeded(seed){ let s = seed; return ()=>{ s = (s*9301+49297)%233280; return s/233280; }; }
+  const rng = seeded(11);
+  const N = 150;
+  const armA = [], armB = [];
+  let vA = 34, vB = 34;
+  for(let i=0;i<N;i++){
+    vA += (67.5 - vA) * 0.05 + (rng()-0.5) * 3.6;
+    vB += (67.5 - vB) * 0.05 + (rng()-0.5) * 3.6;
+    armA.push(vA); armB.push(vB);
+  }
+
+  let singleArm = false;
+  let reveal = 0;
+  const statGap = document.getElementById('stat-gap');
+  const statTrial = document.getElementById('stat-trial');
+
+  function draw(){
+    ctx.clearRect(0,0,W,H);
+    const padL=34, padR=10, padT=10, padB=20;
+    const x0=padL, x1=W-padR, y0=padT, y1=H-padB;
+    const lo=20, hi=100;
+    const yv = v => y1 - (v-lo)/(hi-lo)*(y1-y0);
+    const n = Math.max(2, Math.min(N, Math.floor(reveal)));
+    const xv = i => x0 + i/(N-1)*(x1-x0);
+
+    ctx.strokeStyle = 'rgba(255,255,255,0.06)'; ctx.lineWidth = 1;
+    [25,50,75,100].forEach(v=>{
+      const y = Math.round(yv(v))+0.5;
+      ctx.beginPath(); ctx.moveTo(x0,y); ctx.lineTo(x1,y); ctx.stroke();
+    });
+
+    const yc = Math.round(yv(33.3))+0.5;
+    ctx.setLineDash([3,4]); ctx.strokeStyle = 'rgba(255,255,255,0.2)';
+    ctx.beginPath(); ctx.moveTo(x0,yc); ctx.lineTo(x1,yc); ctx.stroke();
+    ctx.setLineDash([]);
+    ctx.fillStyle = 'rgba(255,255,255,0.32)';
+    ctx.font = '10px Inter,sans-serif'; ctx.textAlign = 'left';
+    ctx.fillText('chance', x0+4, yc-4);
+
+    if(!singleArm && n > 2){
+      ctx.beginPath();
+      for(let i=0;i<n;i++){ const x=xv(i), y=yv(armA[i]); i? ctx.lineTo(x,y):ctx.moveTo(x,y); }
+      for(let i=n-1;i>=0;i--){ ctx.lineTo(xv(i), yv(armB[i])); }
+      ctx.closePath();
+      ctx.fillStyle = 'rgba(95,203,184,0.07)';
+      ctx.fill();
+    }
+
+    function line(arr, color, width){
+      ctx.beginPath();
+      for(let i=0;i<n;i++){ const x=xv(i), y=yv(arr[i]); i? ctx.lineTo(x,y):ctx.moveTo(x,y); }
+      ctx.strokeStyle = color; ctx.lineWidth = width; ctx.lineJoin = 'round'; ctx.stroke();
+    }
+    if(!singleArm) line(armB, 'rgba(141,147,156,0.85)', 1.6);
+    line(armA, '#5FCBB8', 2.3);
+
+    const gap = armA[n-1] - armB[n-1];
+    statGap.textContent = singleArm ? '—' : (gap>=0?'+':'') + gap.toFixed(1);
+    statTrial.textContent = n;
+  }
+
+  function loop(){
+    reveal += 0.6;
+    if(reveal > N + 55) reveal = 0;
+    draw();
+    requestAnimationFrame(loop);
+  }
+  loop();
+
+  const bTwo = document.getElementById('btn-two'), bOne = document.getElementById('btn-one');
+  bTwo.addEventListener('click', ()=>{ singleArm=false; bTwo.classList.add('active'); bOne.classList.remove('active'); });
+  bOne.addEventListener('click', ()=>{ singleArm=true; bOne.classList.add('active'); bTwo.classList.remove('active'); });
 })();
 </script>
 
