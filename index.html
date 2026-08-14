@@ -6,461 +6,404 @@
 <title>Metin — Brain Organoid Electrophysiology</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,500;9..144,600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,wght@0,400;0,500;0,600;1,400;1,500&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
   :root{
-    --bg:#0B0C0E;
-    --bg2:#111319;
-    --panel:#15171D;
-    --text:#ECEDEF;
-    --dim:#8D939C;
-    --dim2:#5C6168;
-    --line:#23262E;
-    --accent:#5FCBB8;
-    --accent-dim:#2C4F49;
+    --paper:#EFEEE6;
+    --paper2:#E6E3D6;
+    --ink:#1D2420;
+    --dim:#5B655C;
+    --dim2:#8A9088;
+    --line:#D3CFC0;
+    --accent:#7D3C5C;
+    --accent-soft:#E4D3DA;
+    --accent2:#B4622E;
+    --accent2-soft:#EDDCCB;
   }
-  *{box-sizing:border-box; margin:0; padding:0;}
-  html,body{ background:var(--bg); color:var(--text); overflow:hidden; height:100%; }
-  body{ font-family:'Inter',system-ui,sans-serif; -webkit-font-smoothing:antialiased; }
-  h1,h2,h3{ font-family:'Fraunces',serif; font-weight:500; }
+  *{ box-sizing:border-box; margin:0; padding:0; }
+  html{ scroll-behavior:smooth; }
+  body{
+    background:var(--paper); color:var(--ink);
+    font-family:'IBM Plex Sans', system-ui, sans-serif;
+    -webkit-font-smoothing:antialiased;
+    line-height:1.5;
+  }
+  h1,h2,h3{ font-family:'Newsreader', serif; font-weight:500; letter-spacing:-0.01em; }
   a{ color:inherit; }
-  .hide-mobile{ }
+  ::selection{ background:var(--accent-soft); color:var(--accent); }
 
-  /* ===================== DESKTOP PAGED TRACK ===================== */
-  #track{
-    display:flex;
-    height:100vh;
-    width:300vw;
-    transition:transform .68s cubic-bezier(.65,0,.35,1);
-    will-change:transform;
-  }
-  .page{
-    width:100vw;
-    height:100vh;
-    flex-shrink:0;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    padding:0 7vw;
-    position:relative;
-  }
-  .page-inner{ max-width:1080px; width:100%; }
+  .mono{ font-family:'IBM Plex Mono', monospace; }
 
-  /* nav dots */
-  #nav{
-    position:fixed; right:34px; top:50%; transform:translateY(-50%);
-    display:flex; flex-direction:column; gap:14px; z-index:50;
+  /* ===================== LAYOUT SHELL ===================== */
+  .shell{
+    display:grid;
+    grid-template-columns:220px 1fr;
+    max-width:1180px;
+    margin:0 auto;
+    padding:0 40px;
+    gap:64px;
   }
-  .dot{
-    width:8px; height:8px; border-radius:50%;
-    background:var(--line); cursor:pointer;
-    transition:background .25s, transform .25s;
-    border:none;
+  .rail{
+    position:sticky; top:0; height:100vh;
+    padding-top:64px;
+    display:flex; flex-direction:column;
   }
-  .dot.active{ background:var(--accent); transform:scale(1.35); }
+  .rail-name{ font-family:'Newsreader', serif; font-size:19px; margin-bottom:2px; }
+  .rail-role{
+    font-size:11px; color:var(--dim); letter-spacing:0.06em; margin-bottom:40px;
+  }
+  .rail nav{ display:flex; flex-direction:column; gap:2px; }
+  .rail nav a{
+    font-size:13px; text-decoration:none; color:var(--dim);
+    padding:7px 0; border-left:2px solid transparent; padding-left:14px;
+    transition:color .15s, border-color .15s;
+  }
+  .rail nav a:hover, .rail nav a.active{ color:var(--ink); border-color:var(--accent); }
+  .rail-foot{ margin-top:auto; padding-bottom:40px; display:flex; flex-direction:column; gap:8px; }
+  .rail-foot a{
+    font-size:12px; color:var(--dim); text-decoration:none;
+    display:flex; align-items:center; gap:6px;
+  }
+  .rail-foot a:hover{ color:var(--accent); }
 
-  .arrow{
-    position:fixed; top:50%; transform:translateY(-50%);
-    width:46px; height:46px; border-radius:50%;
-    border:1px solid var(--line); background:rgba(255,255,255,0.02);
-    color:var(--dim); font-size:18px;
-    display:flex; align-items:center; justify-content:center;
-    cursor:pointer; z-index:50; transition:border-color .2s, color .2s;
-  }
-  .arrow:hover{ border-color:var(--accent); color:var(--accent); }
-  .arrow.left{ left:28px; }
-  .arrow.right{ right:90px; }
-  .arrow.disabled{ opacity:0; pointer-events:none; }
+  .main{ min-width:0; padding-top:64px; padding-bottom:60px; }
 
-  .pageno{
-    position:fixed; left:34px; bottom:28px; z-index:50;
-    font-size:12px; letter-spacing:0.12em; color:var(--dim2);
-    font-family:'Inter',sans-serif;
-  }
-  .pageno b{ color:var(--accent); }
+  section{ padding:76px 0; border-top:1px solid var(--line); }
+  section:first-child{ border-top:none; padding-top:0; }
 
-  /* ===================== TYPE HELPERS ===================== */
   .eyebrow{
-    font-size:12.5px; letter-spacing:0.18em; text-transform:uppercase;
-    color:var(--accent); margin-bottom:18px; display:flex; align-items:center; gap:8px;
+    font-family:'IBM Plex Mono', monospace;
+    font-size:11.5px; letter-spacing:0.1em; text-transform:uppercase;
+    color:var(--accent); margin-bottom:16px;
+    display:flex; align-items:center; gap:8px;
   }
-  .eyebrow::before{ content:''; width:6px; height:6px; border-radius:50%; background:var(--accent); }
+  .eyebrow.alt{ color:var(--accent2); }
+  .eyebrow::before{ content:''; width:14px; height:1px; background:currentColor; }
 
-  /* ===================== PAGE 1 ===================== */
-  #p1{ align-items:flex-start; overflow-y:auto; padding-top:96px; padding-bottom:90px; scrollbar-width:thin; }
-  #p1::-webkit-scrollbar{ width:6px; }
-  #p1::-webkit-scrollbar-thumb{ background:var(--line); border-radius:3px; }
-  #p1 .page-inner{ max-width:740px; }
-  #p1 h1{
-    font-size:clamp(32px,4.6vw,50px);
-    line-height:1.1;
-    max-width:14ch;
-    margin-bottom:32px;
-    color:#fff;
+  h1.hero-title{
+    font-size:clamp(34px,4.2vw,52px); line-height:1.12; max-width:15ch;
+    margin-bottom:28px; font-weight:500;
   }
-  .intro p{ color:var(--dim); font-size:16px; line-height:1.75; max-width:68ch; margin-bottom:18px; }
-  .intro p:last-child{ margin-bottom:0; }
-  .mid-head{
-    margin:46px 0 8px;
-    font-size:12.5px; letter-spacing:0.18em; text-transform:uppercase;
-    color:var(--accent);
+  h2{ font-size:clamp(24px,2.6vw,30px); margin-bottom:20px; max-width:20ch; }
+
+  p{ color:var(--dim); font-size:15.5px; line-height:1.75; max-width:66ch; margin-bottom:16px; }
+  p:last-of-type{ margin-bottom:0; }
+  p strong{ color:var(--ink); font-weight:600; }
+  p em{ color:var(--ink); font-style:italic; }
+  p a{ color:var(--accent); text-decoration:none; border-bottom:1px solid var(--accent-soft); }
+  p a:hover{ border-color:var(--accent); }
+
+  .lede{ font-size:17px; color:var(--ink); max-width:64ch; margin-bottom:16px; }
+
+  /* project entries */
+  .proj{ padding:36px 0; border-top:1px solid var(--line); }
+  .proj:first-of-type{ border-top:none; padding-top:0; }
+  .proj-num{
+    font-family:'IBM Plex Mono', monospace; color:var(--accent);
+    font-size:12.5px; letter-spacing:0.06em; display:block; margin-bottom:10px;
   }
-  .seq-entry{ padding:26px 0; border-top:1px solid var(--line); }
-  .seq-num{ font-family:'Fraunces',serif; color:var(--accent); font-size:13px; letter-spacing:0.08em; display:block; margin-bottom:8px; }
-  .seq-title{ font-size:20px; font-weight:600; color:#fff; margin-bottom:10px; }
-  .seq-desc{ color:var(--dim); font-size:15.5px; line-height:1.75; margin-bottom:12px; max-width:64ch; }
-  .seq-link a{ font-size:12.5px; color:var(--accent); text-decoration:none; border-bottom:1px solid var(--accent-dim); }
-  .seq-bridge{ color:var(--dim2); font-style:italic; font-size:14.5px; margin-top:10px; }
+  .proj-title{ font-family:'Newsreader', serif; font-size:22px; font-weight:500; margin-bottom:12px; }
+  .proj-desc{ font-size:15px; line-height:1.75; color:var(--dim); max-width:66ch; margin-bottom:14px; }
+  .proj-link{ font-family:'IBM Plex Mono', monospace; font-size:12px; }
+  .proj-link a{ color:var(--accent); text-decoration:none; border-bottom:1px solid var(--accent-soft); }
+  .proj-link a:hover{ border-color:var(--accent); }
+  .proj-bridge{ color:var(--dim2); font-style:italic; font-size:13.5px; margin-top:12px; }
 
-  /* old grid (kept for compatibility, unused now) */
-  .works{ display:grid; grid-template-columns:1fr 1fr; gap:14px; }
-  .work{
-    border:1px solid var(--line); border-radius:10px; padding:20px 22px;
-    background:linear-gradient(180deg, rgba(255,255,255,0.015), transparent);
-    transition:border-color .2s, transform .2s;
+  /* callout / quote */
+  .quote{
+    font-style:italic; color:var(--ink); font-size:15px; line-height:1.7;
+    border-left:2px solid var(--accent); padding:2px 0 2px 20px; margin:18px 0;
+    max-width:60ch;
   }
-  .work:hover{ border-color:var(--accent-dim); transform:translateY(-2px); }
-  .work .wt{ font-weight:600; font-size:15.5px; margin-bottom:6px; }
-  .work .wd{ font-size:13.5px; color:var(--dim); margin-bottom:10px; line-height:1.5; }
-  .work a{ font-size:12px; color:var(--accent); text-decoration:none; border-bottom:1px solid var(--accent-dim); }
 
-  /* ===================== PAGE 2 ===================== */
-  #p2 .page-inner{ display:grid; grid-template-columns:1.05fr 1fr; gap:64px; align-items:center; }
-  #p2 h2{ font-size:clamp(26px,3.4vw,36px); color:#fff; margin-bottom:18px; max-width:16ch; }
-  #p2 p{ color:var(--dim); font-size:15.5px; margin-bottom:18px; max-width:48ch; }
+  /* two-col */
+  .split{ display:grid; grid-template-columns:1.1fr 1fr; gap:56px; align-items:center; }
 
-  /* ===================== PAGE 4 — organoid-oi ATTRIBUTION VIZ ===================== */
-  #p4 .page-inner{ display:grid; grid-template-columns:1.05fr 1fr; gap:64px; align-items:center; }
-  #p4 h2{ font-size:clamp(26px,3.4vw,36px); color:#fff; margin-bottom:18px; max-width:18ch; }
-  #p4 p{ color:var(--dim); font-size:15.5px; line-height:1.7; margin-bottom:16px; max-width:48ch; }
+  /* viz */
+  .viz-card{
+    background:var(--paper2); border:1px solid var(--line); border-radius:6px;
+    padding:26px; display:flex; flex-direction:column; align-items:center;
+  }
+  .toggle{
+    display:flex; gap:4px; padding:3px; background:var(--paper);
+    border:1px solid var(--line); border-radius:20px; margin-bottom:20px;
+  }
+  .toggle button{
+    border:none; background:transparent; color:var(--dim);
+    font-family:'IBM Plex Sans', sans-serif; font-size:12px; font-weight:500;
+    padding:7px 14px; border-radius:16px; cursor:pointer; transition:.2s;
+  }
+  .toggle button.active{ background:var(--accent); color:var(--paper); }
+  .stat-line{ display:flex; gap:30px; margin-top:18px; }
+  .stat-line div{ text-align:center; }
+  .stat-line .n{ font-size:21px; font-weight:600; color:var(--accent); font-family:'Newsreader', serif; }
+  .stat-line .l{ font-size:10.5px; color:var(--dim2); margin-top:2px; font-family:'IBM Plex Mono', monospace; }
 
-  .steps{ display:flex; align-items:center; margin:30px 0 8px; }
-  .step{ text-align:center; flex:1; position:relative; }
+  .steps{ display:flex; align-items:flex-start; margin:26px 0 8px; gap:4px; }
+  .step{ text-align:center; flex:1; min-width:0; position:relative; }
   .step .c{
-    width:34px; height:34px; border-radius:50%; margin:0 auto 8px;
-    background:var(--panel); border:1.5px solid var(--accent-dim);
+    width:28px; height:28px; border-radius:50%; margin:0 auto 8px;
+    background:var(--paper); border:1.5px solid var(--accent);
     display:flex; align-items:center; justify-content:center;
-    font-size:13px; color:var(--accent); font-weight:600;
+    font-size:11.5px; color:var(--accent); font-weight:600;
+    font-family:'IBM Plex Mono', monospace;
   }
-  .step .l{ font-size:11px; color:var(--dim2); line-height:1.3; max-width:9ch; margin:0 auto; }
+  .step .l{ font-size:10px; color:var(--dim); line-height:1.3; max-width:8ch; margin:0 auto; }
   .step::after{
-    content:''; position:absolute; top:17px; left:50%; width:100%; height:1px;
+    content:''; position:absolute; top:14px; left:50%; width:100%; height:1px;
     background:var(--line); z-index:-1;
   }
   .step:last-child::after{ display:none; }
 
-  .viz-wrap{ display:flex; flex-direction:column; align-items:center; }
-  .toggle{
-    display:flex; gap:6px; padding:4px; background:var(--panel);
-    border:1px solid var(--line); border-radius:30px; margin-bottom:22px;
+  /* ethics callout box */
+  .ethics-quote{
+    font-style:italic; color:var(--ink); font-size:15px; line-height:1.75;
+    background:var(--accent-soft); border-radius:4px; padding:18px 22px; margin:18px 0;
+    max-width:62ch;
   }
-  .toggle button{
-    border:none; background:transparent; color:var(--dim);
-    font-family:'Inter',sans-serif; font-size:12.5px; font-weight:500;
-    padding:8px 16px; border-radius:24px; cursor:pointer; transition:.2s;
-  }
-  .toggle button.active{ background:var(--accent); color:#04201C; }
-  .stat-line{ display:flex; gap:26px; margin-top:18px; }
-  .stat-line div{ text-align:center; }
-  .stat-line .n{ font-size:22px; font-weight:600; color:var(--accent); font-family:'Fraunces',serif; }
-  .stat-line .l{ font-size:11px; color:var(--dim2); margin-top:2px; }
 
-  /* ===================== PAGE 6 — ABOUT ===================== */
-  #p6 .page-inner{ display:grid; grid-template-columns:1fr 1fr; gap:60px; align-items:center; }
-  #p6 h2{ font-size:clamp(28px,3.6vw,40px); color:#fff; margin-bottom:16px; }
-  #p6 p.about{ color:var(--dim); font-size:15.5px; max-width:44ch; margin-bottom:26px; }
-  .sig{ border-top:1px solid var(--line); padding-top:22px; }
-  .sig .role{ font-size:12px; letter-spacing:0.14em; text-transform:uppercase; color:var(--accent); margin-bottom:4px; }
-  .sig .nm{ font-family:'Fraunces',serif; font-size:26px; color:#fff; margin-bottom:18px; }
-  .links{ display:flex; flex-direction:column; gap:10px; }
+  /* about */
+  .code-block{
+    border:1px solid var(--line); border-radius:6px; padding:16px 20px; margin:22px 0;
+    background:var(--paper2);
+  }
+  .code-block .ct{ font-family:'IBM Plex Mono', monospace; font-size:10.5px; letter-spacing:0.08em; text-transform:uppercase; color:var(--dim2); margin-bottom:10px; }
+  .code-row{ display:flex; justify-content:space-between; padding:6px 0; font-size:13.5px; }
+  .code-row a{ color:var(--accent); text-decoration:none; font-size:12px; font-family:'IBM Plex Mono', monospace; }
+
+  .links{ display:flex; flex-direction:column; gap:9px; max-width:420px; }
   .links a{
-    font-size:14.5px; text-decoration:none; color:var(--text);
+    font-size:14px; text-decoration:none; color:var(--ink);
     border-bottom:1px solid var(--line); padding-bottom:8px;
     display:flex; justify-content:space-between; transition:color .2s, border-color .2s;
   }
-  .links a:hover{ color:var(--accent); border-color:var(--accent-dim); }
-  .links a span{ color:var(--dim2); font-size:12px; }
-  .code-block{
-    border:1px solid var(--line); border-radius:10px; padding:18px 20px; margin-top:24px;
-  }
-  .code-block .ct{ font-size:11px; letter-spacing:0.1em; text-transform:uppercase; color:var(--dim2); margin-bottom:10px; }
-  .code-row{ display:flex; justify-content:space-between; padding:7px 0; font-size:14px; }
-  .code-row a{ color:var(--accent); text-decoration:none; font-size:12.5px; }
+  .links a:hover{ color:var(--accent); border-color:var(--accent-soft); }
+  .links a span{ color:var(--dim2); font-size:11.5px; font-family:'IBM Plex Mono', monospace; }
 
-  /* ===================== MOBILE FALLBACK ===================== */
-  @media (max-width:860px){
-    html,body{ overflow-y:auto; height:auto; }
-    #track{ display:block; width:100%; height:auto; transform:none !important; }
-    .page{ width:100%; height:auto; min-height:100vh; padding:90px 24px 70px; }
-    #p1{ height:auto; overflow-y:visible; padding-top:90px; }
-    #nav, .arrow, .pageno{ display:none; }
-    #p2 .page-inner, #p4 .page-inner, #p6 .page-inner{ grid-template-columns:1fr; gap:40px; }
-    .works{ grid-template-columns:1fr; }
-    .steps{ flex-wrap:wrap; gap:14px 0; }
+  footer{
+    max-width:1180px; margin:0 auto; padding:40px 40px 60px 324px;
+    font-size:12px; color:var(--dim2); font-family:'IBM Plex Mono', monospace;
+  }
+
+  @media (max-width:900px){
+    .shell{ grid-template-columns:1fr; padding:0 22px; gap:0; }
+    .rail{ position:static; height:auto; padding-top:32px; padding-bottom:20px; }
+    .rail-foot{ margin-top:20px; padding-bottom:0; }
+    .main{ padding-top:20px; }
+    .split{ grid-template-columns:1fr; gap:28px; }
+    .steps{ flex-wrap:wrap; gap:16px 8px; }
+    .step{ flex:0 0 30%; }
+    .step::after{ display:none; }
+    footer{ padding-left:22px; padding-right:22px; }
   }
 </style>
 </head>
 <body>
 
-<div id="track">
+<div class="shell">
+  <aside class="rail">
+    <div class="rail-name">Metin</div>
+    <div class="rail-role">Organoid Electrophysiology</div>
+    <nav>
+      <a href="#overview">Overview</a>
+      <a href="#formation">How an Organoid Forms</a>
+      <a href="#projects">Projects</a>
+      <a href="#loom-oi">— loom-oi (detail)</a>
+      <a href="#organoid-oi">— organoid-oi (detail)</a>
+      <a href="#ethics">Ethics</a>
+      <a href="#about">About</a>
+    </nav>
+    <div class="rail-foot">
+      <a href="mailto:metinmetin1558@gmail.com">Email</a>
+      <a href="https://github.com/Metin1558">GitHub</a>
+      <a href="https://orcid.org/0009-0006-4635-405X">ORCID</a>
+    </div>
+  </aside>
 
-  <!-- ============ PAGE 1 ============ -->
-  <section class="page" id="p1">
-    <div class="page-inner">
+  <main class="main">
+
+    <!-- ============ OVERVIEW ============ -->
+    <section id="overview">
       <div class="eyebrow">Organoid Intelligence</div>
-      <h1>Brain tissue that generates its own electricity.</h1>
+      <h1 class="hero-title">Brain tissue that generates its own electricity.</h1>
 
-      <div class="intro">
-        <p>A brain organoid begins as a small population of human stem cells — often reprogrammed from an ordinary blood or skin sample — guided through the same chemical signaling steps that direct a developing brain. Over the course of several weeks, those cells differentiate into neurons and supporting glial cells, and self-organize into a three-dimensional structure a few millimetres across, roughly the size of a lentil. There is no skull, no body, no senses, no environment to act in. What there is, reliably and reproducibly, is electrical activity.</p>
+      <p class="lede">A brain organoid begins as a small population of human stem cells — often reprogrammed from an ordinary blood or skin sample — guided through the same chemical signaling steps that direct a developing brain.</p>
 
-        <p>That activity does not appear all at once, and it does not stay the same. Early cultures fire sparsely, with little structure. Over weeks to months, recordings begin to show coordinated bursts — many neurons firing together, falling silent, then firing again — a signature of maturing connectivity that has been tracked since some of the field's earliest published recordings. An organoid is not thinking in any sense comparable to a brain embedded in a body with a world to respond to. But it is computing something: a living network turning electrical and chemical input into structured, time-varying output.</p>
+      <p>Over the course of several weeks, those cells differentiate into neurons and supporting glial cells, and self-organize into a three-dimensional structure a few millimetres across, roughly the size of a lentil. There is no skull, no body, no senses, no environment to act in. What there is, reliably and reproducibly, is electrical activity.</p>
 
-        <p>To see that output, researchers place the organoid onto a microelectrode array (MEA) — a grid of electrodes listening for the electrical signature of nearby firing neurons. The result is a dense stream of spike data: which electrode, at what time, at what amplitude. Turning that stream into something interpretable — firing rate, synchrony between regions, network bursts, large-scale structure — is itself a substantial computational problem, and one with very little standardization between labs.</p>
+      <p>That activity does not appear all at once, and it does not stay the same. Early cultures fire sparsely, with little structure. Over weeks to months, recordings begin to show coordinated bursts — many neurons firing together, falling silent, then firing again — a signature of maturing connectivity that has been tracked since some of the field's earliest published recordings. An organoid is not thinking in any sense comparable to a brain embedded in a body with a world to respond to. But it is computing something: a living network turning electrical and chemical input into structured, time-varying output.</p>
 
-        <p>In 2023, a research group at Johns Hopkins proposed organoid intelligence (OI) as a field in its own right: using brain organoids not only as disease models, but as a substrate for biological computing, testing whether structured information processing — and eventually learning — can be supported by living neural tissue outside a body. Part of the motivation is practical. A human brain runs on roughly twenty watts, a small fraction of what comparable artificial systems require, and biological tissue offers a fundamentally different kind of computational substrate to study and compare against silicon. Part of the motivation is scientific: organoids let researchers ask developmental and computational questions about neural tissue that are difficult, or simply impossible, to ask inside a living human brain.</p>
+      <p>To see that output, researchers place the organoid onto a microelectrode array (MEA) — a grid of electrodes listening for the electrical signature of nearby firing neurons. The result is a dense stream of spike data: which electrode, at what time, at what amplitude. Turning that stream into something interpretable — firing rate, synchrony between regions, network bursts, large-scale structure — is itself a substantial computational problem, and one with very little standardization between labs.</p>
 
-        <p>The field is young. Its first widely cited organoid electrophysiology recordings date to 2019, and as of 2026 there is still no standard analysis pipeline, no agreed file format, and very little publicly available data to work with. Five projects, presented across this site, are an attempt to work inside that gap — building the tools the field is missing, characterizing what real recordings actually look like over time, identifying exactly where the standard recording method falls short, and naming an ethical question the field has not yet formulated directly.</p>
-      </div>
+      <p>In 2023, a research group at Johns Hopkins proposed organoid intelligence (OI) as a field in its own right: using brain organoids not only as disease models, but as a substrate for biological computing, testing whether structured information processing — and eventually learning — can be supported by living neural tissue outside a body. Part of the motivation is practical. A human brain runs on roughly twenty watts, a small fraction of what comparable artificial systems require, and biological tissue offers a fundamentally different kind of computational substrate to study and compare against silicon. Part of the motivation is scientific: organoids let researchers ask developmental and computational questions about neural tissue that are difficult, or simply impossible, to ask inside a living human brain.</p>
 
-      <div class="mid-head">Five Technical Projects, In Sequence</div>
+      <p>The field is young. Its first widely cited organoid electrophysiology recordings date to 2019, and as of 2026 there is still no standard analysis pipeline, no agreed file format, and very little publicly available data to work with. Five projects, presented below, are an attempt to work inside that gap — building the tools the field is missing, characterizing what real recordings actually look like over time, identifying exactly where the standard recording method falls short, and naming an ethical question the field has not yet formulated directly.</p>
+    </section>
 
-      <div class="seq-entry">
-        <span class="seq-num">01 — Reading the signal</span>
-        <div class="seq-title">Axon</div>
-        <div class="seq-desc">The first problem is mundane but blocking: every lab records organoid activity differently. Some publish pre-sorted spike tables; others publish raw voltage traces that still need spike sorting before they mean anything at all; file structures vary enough that comparing two datasets usually means writing two separate analysis scripts from scratch. Axon is an open-source pipeline built to remove that friction. It reads NWB-formatted recordings end-to-end, runs spike sorting through SpikeInterface when only raw signal is available, and computes a standard set of metrics — firing rate, inter-spike interval variability, pairwise synchrony via the spike time tiling coefficient, network burst detection, graph-level network topology — regardless of which format the data arrived in. It has been validated across 29 subjects spanning four public DANDI Archive datasets.</div>
-        <div class="seq-link"><a href="https://doi.org/10.5281/zenodo.20492811">doi.org/10.5281/zenodo.20492811</a></div>
-      </div>
+    <!-- ============ HOW AN ORGANOID FORMS ============ -->
+    <section id="formation">
+      <div class="eyebrow">How an Organoid Comes To Be</div>
+      <div class="split">
+        <div>
+          <h2>From a blood draw to a firing neural network.</h2>
+          <p>A small blood sample is reprogrammed into stem cells, then guided to differentiate into neural tissue. Over weeks, the cells self-organize into a three-dimensional structure and begin producing spontaneous electrical activity — the same fundamental signal used throughout the human brain.</p>
 
-      <div class="seq-entry">
-        <span class="seq-num">02 — Shaping the signal</span>
-        <div class="seq-title">organoid-oi</div>
-        <div class="seq-desc">Reading activity reliably opens a second question: can an organoid's network be shaped — not just observed, but nudged toward a particular pattern through reward and penalty, the way a developing brain learns from consequence? organoid-oi is a closed-loop simulation framework built to test that computationally before attempting it on real tissue, implementing Three-Factor spike-timing-dependent plasticity with reward and penalty delivered as biologically motivated current injection rather than externally forced weight updates. Its current version (v4) demonstrates a working, verified mechanism: an organoid's own firing intensity scales directly with input strength, and a reward-trained readout layer learns to read that signal correctly — reliably assembling words into a correct sentence by length, and correctly placing new words into an existing one. The full account, including the audit work that led here, is on the next two pages.</div>
-        <div class="seq-link"><a href="https://doi.org/10.5281/zenodo.21787184">doi.org/10.5281/zenodo.21787184</a></div>
-      </div>
+          <div class="steps">
+            <div class="step"><div class="c">1</div><div class="l">Blood cells</div></div>
+            <div class="step"><div class="c">2</div><div class="l">Reprogrammed to stem cells</div></div>
+            <div class="step"><div class="c">3</div><div class="l">Neural differentiation</div></div>
+            <div class="step"><div class="c">4</div><div class="l">3D self-organization</div></div>
+            <div class="step"><div class="c">5</div><div class="l">Spontaneous activity</div></div>
+          </div>
 
-      <div class="seq-entry">
-        <span class="seq-num">03 — A different signal, the same principle</span>
-        <div class="seq-title">loom-oi</div>
-        <div class="seq-desc">Across insects, fish, rodents, and primates, a rapidly expanding shape — the visual signature of something approaching — triggers an immediate, unlearned defensive response: the <em>looming stimulus</em>, processed by one of the most evolutionarily conserved circuits in the vertebrate brain. loom-oi drives an organoid's electrodes directly from a controlled clip's real, computed frame-to-frame expansion rate, and trains a reward-calibrated readout to call it "calm" or "threat" — the same reflexive principle as the word-length work, applied to a different physical quantity. Calibrating it surfaced a genuine failure mode: a naive control condition's own measurement noise exceeded a real, weak version of the signal being detected, defeating classification regardless of downstream tuning. Found via per-class diagnosis and fixed at its source, not patched around, the corrected system separates calm from threat cleanly and shows a real, non-degenerate gap against a standard digital model under an equal time budget.</div>
-        <div class="seq-link"><a href="https://doi.org/10.5281/zenodo.21935455">doi.org/10.5281/zenodo.21935455</a></div>
-      </div>
-
-      <div class="seq-entry">
-        <span class="seq-num">04 — Watching a real culture live</span>
-        <div class="seq-title">Whole-Life Dynamics</div>
-        <div class="seq-desc">Closed-loop simulation is one kind of evidence; long, continuous recordings of a real culture are another. Through the FinalSpark Neuroplatform, a cloud-accessible recording system, two organoid cultures from the same neurosphere batch were tracked from their first recorded activity to the point each stopped firing — 6.4 days for one, 21.7 days for the other. Their baseline firing rates differed by roughly 35-fold despite the shared origin. One culture showed a large, otherwise unexplained rise in spike amplitude in the days before its activity ceased; a separate amplitude spike in the second culture was fully explained by a logged incubator door-opening event — a reminder that long-duration recordings need to be checked against equipment logs before any change in the data is read as biology.</div>
-        <div class="seq-link"><a href="https://doi.org/10.5281/zenodo.20817496">doi.org/10.5281/zenodo.20817496</a></div>
-      </div>
-
-      <div class="seq-entry">
-        <span class="seq-num">05 — Questioning the recording itself</span>
-        <div class="seq-title">UKH</div>
-        <div class="seq-desc">All three projects above assume the recording captures the organoid's activity in the first place. Mostly, it doesn't. A standard microelectrode array is flat; an organoid is not. Placed on a surface array, an organoid is read only where it touches the electrodes — its outer shell. A physics-based model of this geometry shows that a typical surface array reaches roughly 14% of the neurons in a 2&nbsp;mm organoid, and almost none of the inner 80% of its volume. UKH is a proposed three-layer recording architecture — a surface array, a flexible mesh layer grown into the tissue during development, and a central probe — designed to close that gap. The model shows it raising total coverage to roughly 41%, and, more importantly, making it possible to measure synchrony between an organoid's surface and its core for the first time.</div>
-        <div class="seq-link"><a href="https://doi.org/10.5281/zenodo.20498735">doi.org/10.5281/zenodo.20498735</a></div>
-        <div class="seq-bridge">What that coverage gap actually looks like is easier to see than to describe — turn the page.</div>
-      </div>
-
-    </div>
-  </section>
-
-  <!-- ============ PAGE 2 ============ -->
-  <section class="page" id="p2">
-    <div class="page-inner">
-      <div>
-        <div class="eyebrow">How an Organoid Comes To Be</div>
-        <h2>From a blood draw to a firing neural network.</h2>
-        <p>A small blood sample is reprogrammed into stem cells, then guided to differentiate into neural tissue. Over weeks, the cells self-organize into a three-dimensional structure and begin producing spontaneous electrical activity — the same fundamental signal used throughout the human brain.</p>
-
-        <div class="steps">
-          <div class="step"><div class="c">1</div><div class="l">Blood cells</div></div>
-          <div class="step"><div class="c">2</div><div class="l">Reprogrammed to stem cells</div></div>
-          <div class="step"><div class="c">3</div><div class="l">Neural differentiation</div></div>
-          <div class="step"><div class="c">4</div><div class="l">3D self-organization</div></div>
-          <div class="step"><div class="c">5</div><div class="l">Spontaneous activity</div></div>
+          <p style="margin-top:22px;">A microelectrode array (MEA) records this activity — but a flat array only touches the organoid's surface. Toggle the view to see how much of the tissue a recording method can actually reach.</p>
         </div>
 
-        <p style="margin-top:26px;">A microelectrode array (MEA) records this activity — but a flat array only touches the organoid's surface. Toggle the view to see how much of the tissue a recording method can actually reach.</p>
-      </div>
-
-      <div class="viz-wrap">
-        <div class="toggle">
-          <button id="btn-surface" class="active">Surface-only MEA</button>
-          <button id="btn-ukh">UKH 3-Layer</button>
-        </div>
-        <canvas id="organoid-viz" width="340" height="340"></canvas>
-        <div class="stat-line">
-          <div><div class="n" id="stat-pct">14%</div><div class="l">neurons recorded</div></div>
-          <div><div class="n" id="stat-core">0%</div><div class="l">inner core reached</div></div>
+        <div class="viz-card">
+          <div class="toggle">
+            <button id="btn-surface" class="active">Surface-only MEA</button>
+            <button id="btn-ukh">UKH 3-Layer</button>
+          </div>
+          <canvas id="organoid-viz" width="300" height="300"></canvas>
+          <div class="stat-line">
+            <div><div class="n" id="stat-pct">14%</div><div class="l">NEURONS RECORDED</div></div>
+            <div><div class="n" id="stat-core">0%</div><div class="l">INNER CORE REACHED</div></div>
+          </div>
         </div>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- ============ PAGE 3 — organoid-oi v4 ============ -->
-  <section class="page" id="p3">
-    <div class="page-inner">
+    <!-- ============ PROJECTS ============ -->
+    <section id="projects">
+      <div class="eyebrow">Five Technical Projects, In Sequence</div>
+      <h2>Reading, shaping, and questioning the signal.</h2>
+
+      <div class="proj">
+        <span class="proj-num">01 — Reading the signal</span>
+        <div class="proj-title">Axon</div>
+        <div class="proj-desc">The first problem is mundane but blocking: every lab records organoid activity differently. Some publish pre-sorted spike tables; others publish raw voltage traces that still need spike sorting before they mean anything at all; file structures vary enough that comparing two datasets usually means writing two separate analysis scripts from scratch. Axon is an open-source pipeline built to remove that friction. It reads NWB-formatted recordings end-to-end, runs spike sorting through SpikeInterface when only raw signal is available, and computes a standard set of metrics — firing rate, inter-spike interval variability, pairwise synchrony via the spike time tiling coefficient, network burst detection, graph-level network topology — regardless of which format the data arrived in. It has been validated across 29 subjects spanning four public DANDI Archive datasets.</div>
+        <div class="proj-link"><a href="https://doi.org/10.5281/zenodo.20492811">doi.org/10.5281/zenodo.20492811</a></div>
+      </div>
+
+      <div class="proj">
+        <span class="proj-num">02 — Shaping the signal</span>
+        <div class="proj-title">organoid-oi</div>
+        <div class="proj-desc">Reading activity reliably opens a second question: can an organoid's network be shaped — not just observed, but nudged toward a particular pattern through reward and penalty, the way a developing brain learns from consequence? organoid-oi is a closed-loop simulation framework built to test that computationally before attempting it on real tissue, implementing Three-Factor spike-timing-dependent plasticity with reward and penalty delivered as biologically motivated current injection rather than externally forced weight updates. Its current version (v4) demonstrates a working, verified mechanism: an organoid's own firing intensity scales directly with input strength, and a reward-trained readout layer learns to read that signal correctly — reliably assembling words into a correct sentence by length, and correctly placing new words into an existing one. Full account below.</div>
+        <div class="proj-link"><a href="https://doi.org/10.5281/zenodo.21787184">doi.org/10.5281/zenodo.21787184</a></div>
+      </div>
+
+      <div class="proj">
+        <span class="proj-num">03 — A different signal, the same principle</span>
+        <div class="proj-title">loom-oi</div>
+        <div class="proj-desc">Across insects, fish, rodents, and primates, a rapidly expanding shape — the visual signature of something approaching — triggers an immediate, unlearned defensive response: the <em>looming stimulus</em>, processed by one of the most evolutionarily conserved circuits in the vertebrate brain. loom-oi drives an organoid's electrodes directly from a controlled clip's real, computed frame-to-frame expansion rate, and trains a reward-calibrated readout to call it "calm" or "threat" — the same reflexive principle as the word-length work, applied to a different physical quantity. Calibrating it surfaced a genuine failure mode: a naive control condition's own measurement noise exceeded a real, weak version of the signal being detected, defeating classification regardless of downstream tuning. Found via per-class diagnosis and fixed at its source, not patched around, the corrected system separates calm from threat cleanly and shows a real, non-degenerate gap against a standard digital model under an equal time budget.</div>
+        <div class="proj-link"><a href="https://doi.org/10.5281/zenodo.21935455">doi.org/10.5281/zenodo.21935455</a></div>
+      </div>
+
+      <div class="proj">
+        <span class="proj-num">04 — Watching a real culture live</span>
+        <div class="proj-title">Whole-Life Dynamics</div>
+        <div class="proj-desc">Closed-loop simulation is one kind of evidence; long, continuous recordings of a real culture are another. Through the FinalSpark Neuroplatform, a cloud-accessible recording system, two organoid cultures from the same neurosphere batch were tracked from their first recorded activity to the point each stopped firing — 6.4 days for one, 21.7 days for the other. Their baseline firing rates differed by roughly 35-fold despite the shared origin. One culture showed a large, otherwise unexplained rise in spike amplitude in the days before its activity ceased; a separate amplitude spike in the second culture was fully explained by a logged incubator door-opening event — a reminder that long-duration recordings need to be checked against equipment logs before any change in the data is read as biology.</div>
+        <div class="proj-link"><a href="https://doi.org/10.5281/zenodo.20817496">doi.org/10.5281/zenodo.20817496</a></div>
+      </div>
+
+      <div class="proj">
+        <span class="proj-num">05 — Questioning the recording itself</span>
+        <div class="proj-title">UKH</div>
+        <div class="proj-desc">All three projects above assume the recording captures the organoid's activity in the first place. Mostly, it doesn't. A standard microelectrode array is flat; an organoid is not. Placed on a surface array, an organoid is read only where it touches the electrodes — its outer shell. A physics-based model of this geometry shows that a typical surface array reaches roughly 14% of the neurons in a 2&nbsp;mm organoid, and almost none of the inner 80% of its volume. UKH is a proposed three-layer recording architecture — a surface array, a flexible mesh layer grown into the tissue during development, and a central probe — designed to close that gap. The model shows it raising total coverage to roughly 41%, and, more importantly, making it possible to measure synchrony between an organoid's surface and its core for the first time. (Visualized above, in the toggle.)</div>
+        <div class="proj-link"><a href="https://doi.org/10.5281/zenodo.20498735">doi.org/10.5281/zenodo.20498735</a></div>
+      </div>
+    </section>
+
+    <!-- ============ loom-oi DETAIL ============ -->
+    <section id="loom-oi">
+      <div class="eyebrow alt">loom-oi</div>
+      <h2>A reflex borrowed from every visually-capable animal.</h2>
+      <p>A rapidly expanding shape — the visual signature of something approaching — triggers an immediate, unlearned defensive response across insects, fish, rodents, and primates alike: the <em>looming stimulus</em>. loom-oi drives a simulated organoid's electrodes directly from a clip's real, computed expansion rate, and trains a reward-calibrated readout to call it calm or threat, starting blind.</p>
+      <p>Calibrating it surfaced a genuine failure: the "calm" control condition's own measurement noise exceeded a real, weak threat signal — found only by checking per-class accuracy rather than an aggregate score, and fixed at its source. After correction, 5 of 15 random seeds pass a three-stage qualification screen, and under an equal real-time budget the organoid readout reaches 86% against a standard digital model's 100% — a genuine, informative comparison, not the degenerate 100%/100% an under-calibrated version produced.</p>
+      <div class="proj-link"><a href="https://doi.org/10.5281/zenodo.21935455">doi.org/10.5281/zenodo.21935455</a> &nbsp;·&nbsp; <a href="https://github.com/Metin1558/loom-oi">github.com/Metin1558/loom-oi</a></div>
+    </section>
+
+    <!-- ============ organoid-oi v4 DETAIL ============ -->
+    <section id="organoid-oi">
       <div class="eyebrow">organoid-oi — v4</div>
-      <h2 style="font-size:clamp(26px,3.6vw,38px); color:#fff; margin-bottom:18px; max-width:24ch;">A working demonstration, verified end to end.</h2>
+      <h2>A working demonstration, verified end to end.</h2>
 
-      <p style="color:var(--dim); font-size:15.5px; line-height:1.75; max-width:64ch; margin-bottom:16px;">organoid-oi's current version demonstrates a simple, honestly-named mechanism working reliably: a simulated organoid's own firing intensity scales directly with how strongly it is driven — a longer input produces more firing, a physical relationship that requires no training. What <em>is</em> trained, through Three-Factor spike-timing-dependent plasticity and a local reward-calibrated readout layer, is the ability to read that signal correctly, starting from a blind, uncalibrated state.</p>
+      <p>organoid-oi's current version demonstrates a simple, honestly-named mechanism working reliably: a simulated organoid's own firing intensity scales directly with how strongly it is driven — a longer input produces more firing, a physical relationship that requires no training. What <em>is</em> trained, through Three-Factor spike-timing-dependent plasticity and a local reward-calibrated readout layer, is the ability to read that signal correctly, starting from a blind, uncalibrated state.</p>
 
-      <p style="color:var(--dim); font-size:15.5px; line-height:1.75; max-width:64ch; margin-bottom:16px;">Applied to word length, the result is a system that takes a set of scrambled words and correctly assembles them into a sentence, and correctly places a newly introduced word into an existing one. We call this a <strong>reflexive</strong> demonstration, deliberately — the same word used by Kagan et al. for their organoid's closed-loop Pong behavior in 2022. The mechanism is simple and named plainly; the result is real.</p>
+      <p>Applied to word length, the result is a system that takes a set of scrambled words and correctly assembles them into a sentence, and correctly places a newly introduced word into an existing one. We call this a <strong>reflexive</strong> demonstration, deliberately — the same word used by Kagan et al. for their organoid's closed-loop Pong behavior in 2022. The mechanism is simple and named plainly; the result is real.</p>
 
-      <p style="color:var(--dim); font-size:15.5px; line-height:1.75; max-width:64ch; margin-bottom:16px;">Three things were verified before this was called done. The dose-response relationship itself — word length against firing intensity, correlation +0.999 across eight test words, shown on the next page. Readout calibration — accuracy rising from near-chance to reliable correct ordering as reward and penalty shape the decoder. And interface parity with real hardware: the system is built against a single method signature, implemented identically for simulation and for a live-tissue backend, so the same code runs on either — pending the API integration step that connects the second one.</p>
+      <p>Three things were verified before this was called done. The dose-response relationship itself — word length against firing intensity, correlation +0.999 across eight test words, charted below. Readout calibration — accuracy rising from near-chance to reliable correct ordering as reward and penalty shape the decoder. And interface parity with real hardware: the system is built against a single method signature, implemented identically for simulation and for a live-tissue backend, so the same code runs on either — pending the API integration step that connects the second one.</p>
 
-      <p style="color:var(--dim); font-size:15.5px; line-height:1.75; max-width:64ch; margin-bottom:24px;">This version followed an earlier, rigorously negative attempt at a harder claim — categorical rather than reflexive learning, tested across several task designs and difficulty levels, none of which held up under repeated verification. That result was published in full rather than quietly reworked, and it directly motivated the smaller, verified claim reported here. The six measurement defects found along the way — and the general failure pattern they share — are documented separately as a standalone methodological contribution: <a href="https://doi.org/10.5281/zenodo.21892103" style="color:var(--live);">doi.org/10.5281/zenodo.21892103</a>.</p>
+      <p>This version followed an earlier, rigorously negative attempt at a harder claim — categorical rather than reflexive learning, tested across several task designs and difficulty levels, none of which held up under repeated verification. That result was published in full rather than quietly reworked, and it directly motivated the smaller, verified claim reported here. The six measurement defects found along the way — and the general failure pattern they share — are documented separately as a standalone methodological contribution: <a href="https://doi.org/10.5281/zenodo.21892103">doi.org/10.5281/zenodo.21892103</a>.</p>
 
-      <div class="seq-link"><a href="https://doi.org/10.5281/zenodo.21787184">doi.org/10.5281/zenodo.21787184</a></div>
-      <div class="seq-bridge">What that dose-response relationship looks like — turn the page.</div>
-    </div>
-  </section>
-
-  <!-- ============ PAGE 4 — organoid-oi ATTRIBUTION MONITOR (viz) ============ -->
-  <section class="page" id="p4">
-    <div class="page-inner">
-      <div>
-        <div class="eyebrow">organoid-oi — Verified</div>
-        <h2>One relationship, verified.</h2>
-        <p>The current version's claim rests on a single, checkable physical fact: an organoid's firing intensity scales with how strongly it is driven. Word length was used as that drive — a longer word activates more electrodes, produces more spikes — and the relationship was measured directly, not assumed.</p>
-        <p>Eight words of increasing length were each presented five times to an untrained population. The chart is that measurement — real data, not illustrative. The relationship is what a reward-trained readout layer was then calibrated to use, reliably, to assemble words into a correct sentence.</p>
-        <p style="margin-top:26px;">Correlation between length and firing intensity: <strong>+0.999</strong>.</p>
-      </div>
-
-      <div class="viz-wrap">
-        <canvas id="attrib-viz" width="360" height="230"></canvas>
-        <div class="stat-line">
-          <div><div class="n" id="stat-gap">+0.999</div><div class="l">correlation</div></div>
-          <div><div class="n" id="stat-trial">8 / 8</div><div class="l">monotonic pairs</div></div>
+      <div class="split" style="margin-top:36px; align-items:start;">
+        <div>
+          <p style="margin-bottom:0;">The current version's claim rests on a single, checkable physical fact: an organoid's firing intensity scales with how strongly it is driven. Word length was used as that drive — a longer word activates more electrodes, produces more spikes — and the relationship was measured directly, not assumed. Eight words of increasing length were each presented five times to an untrained population; the chart is that measurement, real data, not illustrative.</p>
+        </div>
+        <div class="viz-card">
+          <canvas id="attrib-viz" width="300" height="200"></canvas>
+          <div class="stat-line">
+            <div><div class="n" id="stat-gap">+0.999</div><div class="l">CORRELATION</div></div>
+            <div><div class="n" id="stat-trial">8 / 8</div><div class="l">MONOTONIC PAIRS</div></div>
+          </div>
         </div>
       </div>
-    </div>
-  </section>
 
-  <!-- ============ PAGE 5 (was 3) — ETHICS ============ -->
-  <section class="page" id="p5">
-    <div class="page-inner">
+      <div class="proj-link" style="margin-top:28px;"><a href="https://doi.org/10.5281/zenodo.21787184">doi.org/10.5281/zenodo.21787184</a></div>
+    </section>
+
+    <!-- ============ ETHICS ============ -->
+    <section id="ethics">
       <div class="eyebrow">A Fifth Contribution — Ethics</div>
-      <h2 style="font-size:clamp(26px,3.6vw,38px); color:#fff; margin-bottom:18px; max-width:20ch;">Functional provenance stratification.</h2>
-      <p style="color:var(--dim); font-size:15.5px; line-height:1.75; max-width:62ch; margin-bottom:16px;">The organoid intelligence ethics literature has developed along three largely separate axes: consciousness and moral status, informed consent and the right to withdraw, and the commodification of donated biological material. Each is reasonably well documented on its own. None directly names the following scenario.</p>
-      <p style="color:var(--dim); font-size:15.5px; line-height:1.75; max-width:62ch; margin-bottom:16px; font-style:italic; border-left:2px solid var(--accent-dim); padding-left:16px;">If donor cell lines are catalogued and selected according to functional or computational performance metrics — learning rate, network efficiency, signal-to-noise ratio, metabolic resilience — rather than identity or disease status, this creates an implicit market-value hierarchy within the donor population.</p>
-      <p style="color:var(--dim); font-size:15.5px; line-height:1.75; max-width:62ch; margin-bottom:16px;">This is not purely speculative. Large-scale iPSC biobanking already catalogues donor lines by differentiation efficiency and functional yield — an organoid-intelligence-specific performance axis would extend an existing practice, not invent a new one. The scenario links two risks not previously connected in this combination: retrospective consent-scope violation, when a line is reclassified by a criterion that did not exist at the time of donation, and structural inequity, when sampling bias causes specific donor populations to be disproportionately coded as lower-performing.</p>
-      <p style="color:var(--dim); font-size:15.5px; line-height:1.75; max-width:62ch; margin-bottom:24px;">I term this practice <i>functional provenance stratification</i> and propose four minimal safeguards: explicit disclosure in consent forms, transparency and auditability of performance metrics, periodic equity analysis across donor populations, and preserved withdrawal rights independent of a line's performance category. This is a conceptual contribution, offered in the spirit of the anticipatory neuroethics already established for questions of organoid consciousness — not an empirical finding.</p>
-      <div class="seq-link"><a href="https://doi.org/10.5281/zenodo.20953724" style="font-size:13px;">doi.org/10.5281/zenodo.20953724</a></div>
-    </div>
-  </section>
+      <h2>Functional provenance stratification.</h2>
+      <p>The organoid intelligence ethics literature has developed along three largely separate axes: consciousness and moral status, informed consent and the right to withdraw, and the commodification of donated biological material. Each is reasonably well documented on its own. None directly names the following scenario.</p>
+      <div class="ethics-quote">If donor cell lines are catalogued and selected according to functional or computational performance metrics — learning rate, network efficiency, signal-to-noise ratio, metabolic resilience — rather than identity or disease status, this creates an implicit market-value hierarchy within the donor population.</div>
+      <p>This is not purely speculative. Large-scale iPSC biobanking already catalogues donor lines by differentiation efficiency and functional yield — an organoid-intelligence-specific performance axis would extend an existing practice, not invent a new one. The scenario links two risks not previously connected in this combination: retrospective consent-scope violation, when a line is reclassified by a criterion that did not exist at the time of donation, and structural inequity, when sampling bias causes specific donor populations to be disproportionately coded as lower-performing.</p>
+      <p>I term this practice <em>functional provenance stratification</em> and propose four minimal safeguards: explicit disclosure in consent forms, transparency and auditability of performance metrics, periodic equity analysis across donor populations, and preserved withdrawal rights independent of a line's performance category. This is a conceptual contribution, offered in the spirit of the anticipatory neuroethics already established for questions of organoid consciousness — not an empirical finding.</p>
+      <div class="proj-link"><a href="https://doi.org/10.5281/zenodo.20953724">doi.org/10.5281/zenodo.20953724</a></div>
+    </section>
 
-  <!-- ============ PAGE 6 (was 4) — ABOUT ============ -->
-  <section class="page" id="p6">
-    <div class="page-inner">
-      <div>
-        <div class="eyebrow">About</div>
-        <h2>Independent, by necessity and by choice.</h2>
-        <p class="about">I work without a laboratory and without formal academic affiliation — using public datasets (DANDI Archive) and direct data access granted by research platforms. Based in Aliağa, İzmir, Turkey.</p>
+    <!-- ============ ABOUT ============ -->
+    <section id="about">
+      <div class="eyebrow">About</div>
+      <h2>Independent, by necessity and by choice.</h2>
+      <p>I work without a laboratory and without formal academic affiliation — using public datasets (DANDI Archive) and direct data access granted by research platforms. Based in Aliağa, İzmir, Turkey.</p>
 
-        <div class="code-block">
-          <div class="ct">Code</div>
-          <div class="code-row"><span>axon — MEA analysis pipeline</span><a href="https://github.com/Metin1558/axon">repository →</a></div>
-          <div class="code-row"><span>organoid-oi — closed-loop STDP</span><a href="https://github.com/Metin1558/organoid-oi">repository →</a></div>
-        </div>
+      <div class="code-block">
+        <div class="ct">Code</div>
+        <div class="code-row"><span>Axon — MEA analysis pipeline</span><a href="https://github.com/Metin1558/axon">repository →</a></div>
+        <div class="code-row"><span>organoid-oi — closed-loop STDP</span><a href="https://github.com/Metin1558/organoid-oi">repository →</a></div>
+        <div class="code-row"><span>loom-oi — reflexive threat detection</span><a href="https://github.com/Metin1558/loom-oi">repository →</a></div>
       </div>
 
-      <div class="sig">
-        <div class="role">Independent Researcher</div>
-        <div class="nm">Metin</div>
-        <div class="links">
-          <a href="mailto:metinmetin1558@gmail.com">metinmetin1558@gmail.com <span>email</span></a>
-          <a href="https://orcid.org/0009-0006-4635-405X">0009-0006-4635-405X <span>orcid</span></a>
-          <a href="https://github.com/Metin1558">github.com/Metin1558 <span>code</span></a>
-          <a href="https://scholar.google.com/citations?user=chG4PiMAAAAJ">Google Scholar <span>citations</span></a>
-          <a href="https://www.linkedin.com/in/metin-metin-a80b34410">LinkedIn <span>profile</span></a>
-        </div>
+      <div class="links" style="margin-top:24px;">
+        <a href="mailto:metinmetin1558@gmail.com">metinmetin1558@gmail.com <span>email</span></a>
+        <a href="https://orcid.org/0009-0006-4635-405X">0009-0006-4635-405X <span>orcid</span></a>
+        <a href="https://github.com/Metin1558">github.com/Metin1558 <span>code</span></a>
+        <a href="https://scholar.google.com/citations?user=chG4PiMAAAAJ">Google Scholar <span>citations</span></a>
+        <a href="https://www.linkedin.com/in/metin-metin-a80b34410">LinkedIn <span>profile</span></a>
       </div>
-    </div>
-  </section>
+    </section>
 
+  </main>
 </div>
 
-<div id="nav">
-  <button class="dot active" data-i="0"></button>
-  <button class="dot" data-i="1"></button>
-  <button class="dot" data-i="2"></button>
-  <button class="dot" data-i="3"></button>
-  <button class="dot" data-i="4"></button>
-  <button class="dot" data-i="5"></button>
-</div>
-<div class="arrow left disabled" id="arrowLeft">‹</div>
-<div class="arrow right" id="arrowRight">›</div>
-<div class="pageno"><b id="pnow">01</b> / 06</div>
-
+<footer>Independent research · Aliağa, İzmir · Updated August 2026</footer>
 
 <script>
-/* ---------------- Paging navigation (desktop) ---------------- */
+/* ---------------- Scrollspy for rail nav ---------------- */
 (function(){
-  const track = document.getElementById('track');
-  const dots = document.querySelectorAll('.dot');
-  const arrowL = document.getElementById('arrowLeft');
-  const arrowR = document.getElementById('arrowRight');
-  const pnow = document.getElementById('pnow');
-  let idx = 0;
-  const N = 6;
-  let locked = false;
-
-  function isDesktop(){ return window.innerWidth > 860; }
-
-  function go(i){
-    const prev = idx;
-    idx = Math.max(0, Math.min(N-1, i));
-    if(isDesktop()){
-      track.style.transform = `translateX(-${idx*100}vw)`;
+  const links = document.querySelectorAll('.rail nav a');
+  const sections = Array.from(links).map(a => document.querySelector(a.getAttribute('href')));
+  function onScroll(){
+    let current = sections[0];
+    for (const s of sections){
+      if (s && s.getBoundingClientRect().top < window.innerHeight * 0.35) current = s;
     }
-    if(idx===0 && prev!==0){
-      const p1el = document.getElementById('p1');
-      if(p1el) p1el.scrollTop = 0;
-    }
-    dots.forEach((d,j)=>d.classList.toggle('active', j===idx));
-    arrowL.classList.toggle('disabled', idx===0);
-    arrowR.classList.toggle('disabled', idx===N-1);
-    pnow.textContent = String(idx+1).padStart(2,'0');
+    links.forEach(a => a.classList.toggle('active', a.getAttribute('href') === '#' + current.id));
   }
-
-  dots.forEach(d=>d.addEventListener('click', ()=>go(parseInt(d.dataset.i))));
-  arrowL.addEventListener('click', ()=>go(idx-1));
-  arrowR.addEventListener('click', ()=>go(idx+1));
-
-  window.addEventListener('keydown', (e)=>{
-    if(!isDesktop()) return;
-    if(e.key==='ArrowRight') go(idx+1);
-    if(e.key==='ArrowLeft') go(idx-1);
-  });
-
-  window.addEventListener('wheel', (e)=>{
-    if(!isDesktop()) return;
-    if(Math.abs(e.deltaY) < 12) return;
-    if(locked) return;
-
-    if(idx===0){
-      const p1el = document.getElementById('p1');
-      const atTop = p1el.scrollTop <= 2;
-      const atBottom = p1el.scrollTop + p1el.clientHeight >= p1el.scrollHeight - 2;
-      if(e.deltaY>0 && !atBottom) return;   // still room to scroll down inside page 1
-      if(e.deltaY<0) return;                 // scrolling up inside page 1 (or already at top) — never auto-page backward from page 1
-    }
-
-    locked = true;
-    go(idx + (e.deltaY>0 ? 1 : -1));
-    setTimeout(()=>locked=false, 700);
-  }, {passive:true});
-
-  let touchStartX = 0;
-  window.addEventListener('touchstart', e=>{ touchStartX = e.touches[0].clientX; });
-  window.addEventListener('touchend', e=>{
-    if(!isDesktop()) return;
-    const dx = e.changedTouches[0].clientX - touchStartX;
-    if(Math.abs(dx) > 60) go(idx + (dx<0 ? 1 : -1));
-  });
-
-  window.addEventListener('resize', ()=>go(idx));
-  go(0);
+  window.addEventListener('scroll', onScroll, { passive:true });
+  onScroll();
 })();
 
 /* ---------------- Organoid / MEA coverage visualization ---------------- */
@@ -468,9 +411,8 @@
   const canvas = document.getElementById('organoid-viz');
   const ctx = canvas.getContext('2d');
   const W = canvas.width, H = canvas.height;
-  const cx = W/2, cy = H/2, R = 142;
+  const cx = W/2, cy = H/2, R = 122;
 
-  // Deterministic pseudo-random neuron cloud
   function seededRandom(seed){ let s = seed; return ()=>{ s = (s*9301+49297)%233280; return s/233280; }; }
   const rng = seededRandom(42);
 
@@ -480,17 +422,16 @@
     const r = Math.sqrt(rng())*R;
     const x = cx + Math.cos(a)*r;
     const y = cy + Math.sin(a)*r;
-    const depth = r/R; // 0 = core, 1 = surface
+    const depth = r/R;
     neurons.push({x,y,depth});
   }
 
-  let mode = 'surface'; // 'surface' | 'ukh'
+  let mode = 'surface';
 
   function recorded(n){
     if(mode==='surface'){
-      return n.depth > 0.93; // outer ring ≈ 14% of area, matches published surface-only figure
+      return n.depth > 0.93;
     } else {
-      // UKH: same outer ring (K1) + two inner mesh shells (K2) + core sliver (K3)
       return n.depth > 0.93 ||
              (n.depth > 0.58 && n.depth < 0.70) ||
              (n.depth > 0.32 && n.depth < 0.42) ||
@@ -499,9 +440,8 @@
   }
 
   function drawElectrodes(){
-    ctx.strokeStyle = 'rgba(95,203,184,0.35)';
+    ctx.strokeStyle = 'rgba(125,60,92,0.4)';
     ctx.lineWidth = 1;
-    // surface ticks
     const nTicks = 28;
     for(let i=0;i<nTicks;i++){
       const a = (i/nTicks)*Math.PI*2;
@@ -510,16 +450,14 @@
       ctx.beginPath(); ctx.moveTo(x1,y1); ctx.lineTo(x2,y2); ctx.stroke();
     }
     if(mode==='ukh'){
-      // mesh shell rings (dashed)
       ctx.save();
       ctx.setLineDash([3,4]);
-      ctx.strokeStyle = 'rgba(95,203,184,0.45)';
+      ctx.strokeStyle = 'rgba(125,60,92,0.5)';
       [0.64, 0.37].forEach(f=>{
         ctx.beginPath(); ctx.arc(cx,cy,R*f,0,Math.PI*2); ctx.stroke();
       });
       ctx.restore();
-      // central probe line
-      ctx.strokeStyle = 'rgba(95,203,184,0.6)';
+      ctx.strokeStyle = 'rgba(125,60,92,0.65)';
       ctx.beginPath(); ctx.moveTo(cx, cy-R*0.9); ctx.lineTo(cx, cy+R*0.9); ctx.stroke();
     }
   }
@@ -527,23 +465,22 @@
   let t = 0;
   function draw(){
     ctx.clearRect(0,0,W,H);
-    // outer boundary
     ctx.beginPath(); ctx.arc(cx,cy,R,0,Math.PI*2);
-    ctx.strokeStyle = 'rgba(255,255,255,0.08)';
+    ctx.strokeStyle = 'rgba(29,36,32,0.15)';
     ctx.lineWidth = 1.4; ctx.stroke();
 
     drawElectrodes();
 
     for(const n of neurons){
       const rec = recorded(n);
-      let alpha = rec ? 0.55 : 0.16;
+      let alpha = rec ? 0.75 : 0.18;
       if(rec){
-        const pulse = 0.25*Math.sin(t*0.06 + n.x*0.5 + n.y*0.3);
-        alpha = Math.max(0.35, Math.min(1, alpha + pulse));
+        const pulse = 0.2*Math.sin(t*0.06 + n.x*0.5 + n.y*0.3);
+        alpha = Math.max(0.5, Math.min(1, alpha + pulse));
       }
       ctx.beginPath();
       ctx.arc(n.x, n.y, rec?2.1:1.5, 0, Math.PI*2);
-      ctx.fillStyle = rec ? `rgba(95,203,184,${alpha})` : `rgba(255,255,255,${alpha*0.5})`;
+      ctx.fillStyle = rec ? `rgba(125,60,92,${alpha})` : `rgba(29,36,32,${alpha*0.6})`;
       ctx.fill();
     }
     t++;
@@ -574,8 +511,6 @@
   const ctx = canvas.getContext('2d');
   const W = canvas.width, H = canvas.height;
 
-  // Real measurement: 8 words, increasing length, mean firing intensity
-  // over 5 repeats each (untrained population). Not illustrative.
   const points = [
     {len:1, fire:2.4}, {len:2, fire:5.2}, {len:3, fire:7.4}, {len:4, fire:9.8},
     {len:5, fire:12.6}, {len:6, fire:14.8}, {len:7, fire:17.6}, {len:8, fire:20.8},
@@ -591,35 +526,33 @@
     const xv = l => x0 + (l/lenMax)*(x1-x0);
     const yv = f => y1 - (f/fireMax)*(y1-y0);
 
-    ctx.strokeStyle = 'rgba(255,255,255,0.06)'; ctx.lineWidth = 1;
+    ctx.strokeStyle = 'rgba(29,36,32,0.09)'; ctx.lineWidth = 1;
     [0,6,12,18,24].forEach(f=>{
       const y = Math.round(yv(f))+0.5;
       ctx.beginPath(); ctx.moveTo(x0,y); ctx.lineTo(x1,y); ctx.stroke();
     });
-    ctx.fillStyle = 'rgba(255,255,255,0.32)'; ctx.font = '10px Inter,sans-serif';
+    ctx.fillStyle = 'rgba(29,36,32,0.4)'; ctx.font = "10px 'IBM Plex Mono',monospace";
     ctx.textAlign = 'left'; ctx.fillText('firing intensity', x0+2, y0-2);
     ctx.textAlign = 'right'; ctx.fillText('word length →', x1, y1+18);
 
     const n = Math.max(1, Math.min(points.length, Math.ceil(reveal)));
 
-    // trend line (least-squares fit through the full dataset)
     const N = points.length;
     const sx = points.reduce((a,p)=>a+p.len,0), sy = points.reduce((a,p)=>a+p.fire,0);
     const sxy = points.reduce((a,p)=>a+p.len*p.fire,0), sxx = points.reduce((a,p)=>a+p.len*p.len,0);
     const slope = (N*sxy - sx*sy) / (N*sxx - sx*sx);
     const intercept = (sy - slope*sx) / N;
-    ctx.setLineDash([3,4]); ctx.strokeStyle = 'rgba(255,255,255,0.22)'; ctx.lineWidth = 1;
+    ctx.setLineDash([3,4]); ctx.strokeStyle = 'rgba(29,36,32,0.25)'; ctx.lineWidth = 1;
     ctx.beginPath(); ctx.moveTo(xv(0), yv(intercept)); ctx.lineTo(xv(lenMax), yv(intercept+slope*lenMax)); ctx.stroke();
     ctx.setLineDash([]);
 
-    // measured points, connected
     ctx.beginPath();
     for(let i=0;i<n;i++){ const p=points[i]; const x=xv(p.len), y=yv(p.fire); i? ctx.lineTo(x,y):ctx.moveTo(x,y); }
-    ctx.strokeStyle = '#5FCBB8'; ctx.lineWidth = 2.2; ctx.lineJoin='round'; ctx.stroke();
+    ctx.strokeStyle = '#7D3C5C'; ctx.lineWidth = 2.2; ctx.lineJoin='round'; ctx.stroke();
     for(let i=0;i<n;i++){
       const p=points[i];
       ctx.beginPath(); ctx.arc(xv(p.len), yv(p.fire), 3.4, 0, 7);
-      ctx.fillStyle = '#5FCBB8'; ctx.fill();
+      ctx.fillStyle = '#7D3C5C'; ctx.fill();
     }
 
     document.getElementById('stat-gap').textContent = '+0.999';
