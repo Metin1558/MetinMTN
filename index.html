@@ -222,7 +222,7 @@
         <p>The field is young. Its first widely cited organoid electrophysiology recordings date to 2019, and as of 2026 there is still no standard analysis pipeline, no agreed file format, and very little publicly available data to work with. Five projects, presented across this site, are an attempt to work inside that gap — building the tools the field is missing, characterizing what real recordings actually look like over time, identifying exactly where the standard recording method falls short, and naming an ethical question the field has not yet formulated directly.</p>
       </div>
 
-      <div class="mid-head">Four Technical Projects, In Sequence</div>
+      <div class="mid-head">Five Technical Projects, In Sequence</div>
 
       <div class="seq-entry">
         <span class="seq-num">01 — Reading the signal</span>
@@ -239,14 +239,21 @@
       </div>
 
       <div class="seq-entry">
-        <span class="seq-num">03 — Watching a real culture live</span>
+        <span class="seq-num">03 — A different signal, the same principle</span>
+        <div class="seq-title">loom-oi</div>
+        <div class="seq-desc">Across insects, fish, rodents, and primates, a rapidly expanding shape — the visual signature of something approaching — triggers an immediate, unlearned defensive response: the <em>looming stimulus</em>, processed by one of the most evolutionarily conserved circuits in the vertebrate brain. loom-oi drives an organoid's electrodes directly from a controlled clip's real, computed frame-to-frame expansion rate, and trains a reward-calibrated readout to call it "calm" or "threat" — the same reflexive principle as the word-length work, applied to a different physical quantity. Calibrating it surfaced a genuine failure mode: a naive control condition's own measurement noise exceeded a real, weak version of the signal being detected, defeating classification regardless of downstream tuning. Found via per-class diagnosis and fixed at its source, not patched around, the corrected system separates calm from threat cleanly and shows a real, non-degenerate gap against a standard digital model under an equal time budget.</div>
+        <div class="seq-link"><a href="https://doi.org/10.5281/zenodo.21935455">doi.org/10.5281/zenodo.21935455</a></div>
+      </div>
+
+      <div class="seq-entry">
+        <span class="seq-num">04 — Watching a real culture live</span>
         <div class="seq-title">Whole-Life Dynamics</div>
         <div class="seq-desc">Closed-loop simulation is one kind of evidence; long, continuous recordings of a real culture are another. Through the FinalSpark Neuroplatform, a cloud-accessible recording system, two organoid cultures from the same neurosphere batch were tracked from their first recorded activity to the point each stopped firing — 6.4 days for one, 21.7 days for the other. Their baseline firing rates differed by roughly 35-fold despite the shared origin. One culture showed a large, otherwise unexplained rise in spike amplitude in the days before its activity ceased; a separate amplitude spike in the second culture was fully explained by a logged incubator door-opening event — a reminder that long-duration recordings need to be checked against equipment logs before any change in the data is read as biology.</div>
         <div class="seq-link"><a href="https://doi.org/10.5281/zenodo.20817496">doi.org/10.5281/zenodo.20817496</a></div>
       </div>
 
       <div class="seq-entry">
-        <span class="seq-num">04 — Questioning the recording itself</span>
+        <span class="seq-num">05 — Questioning the recording itself</span>
         <div class="seq-title">UKH</div>
         <div class="seq-desc">All three projects above assume the recording captures the organoid's activity in the first place. Mostly, it doesn't. A standard microelectrode array is flat; an organoid is not. Placed on a surface array, an organoid is read only where it touches the electrodes — its outer shell. A physics-based model of this geometry shows that a typical surface array reaches roughly 14% of the neurons in a 2&nbsp;mm organoid, and almost none of the inner 80% of its volume. UKH is a proposed three-layer recording architecture — a surface array, a flexible mesh layer grown into the tissue during development, and a central probe — designed to close that gap. The model shows it raising total coverage to roughly 41%, and, more importantly, making it possible to measure synchrony between an organoid's surface and its core for the first time.</div>
         <div class="seq-link"><a href="https://doi.org/10.5281/zenodo.20498735">doi.org/10.5281/zenodo.20498735</a></div>
@@ -301,7 +308,7 @@
 
       <p style="color:var(--dim); font-size:15.5px; line-height:1.75; max-width:64ch; margin-bottom:16px;">Three things were verified before this was called done. The dose-response relationship itself — word length against firing intensity, correlation +0.999 across eight test words, shown on the next page. Readout calibration — accuracy rising from near-chance to reliable correct ordering as reward and penalty shape the decoder. And interface parity with real hardware: the system is built against a single method signature, implemented identically for simulation and for a live-tissue backend, so the same code runs on either — pending the API integration step that connects the second one.</p>
 
-      <p style="color:var(--dim); font-size:15.5px; line-height:1.75; max-width:64ch; margin-bottom:24px;">This version followed an earlier, rigorously negative attempt at a harder claim — categorical rather than reflexive learning, tested across several task designs and difficulty levels, none of which held up under repeated verification. That result was published in full rather than quietly reworked, and it directly motivated the smaller, verified claim reported here.</p>
+      <p style="color:var(--dim); font-size:15.5px; line-height:1.75; max-width:64ch; margin-bottom:24px;">This version followed an earlier, rigorously negative attempt at a harder claim — categorical rather than reflexive learning, tested across several task designs and difficulty levels, none of which held up under repeated verification. That result was published in full rather than quietly reworked, and it directly motivated the smaller, verified claim reported here. The six measurement defects found along the way — and the general failure pattern they share — are documented separately as a standalone methodological contribution: <a href="https://doi.org/10.5281/zenodo.21892103" style="color:var(--live);">doi.org/10.5281/zenodo.21892103</a>.</p>
 
       <div class="seq-link"><a href="https://doi.org/10.5281/zenodo.21787184">doi.org/10.5281/zenodo.21787184</a></div>
       <div class="seq-bridge">What that dose-response relationship looks like — turn the page.</div>
