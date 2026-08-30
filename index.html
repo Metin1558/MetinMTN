@@ -219,7 +219,8 @@
       <a href="#organoid-oi"><span class="num">5</span>organoid-oi, in detail</a>
       <a href="#ethics"><span class="num">6</span>Ethics</a>
       <a href="#support"><span class="num">7</span>Support</a>
-      <a href="#about"><span class="num">8</span>About</a>
+      <a href="#real-tissue"><span class="num">8</span>Real-Tissue Experiments</a>
+      <a href="#about"><span class="num">9</span>About</a>
     </nav>
     <div class="rail-foot">
       <a href="mailto:metinmtn@metin.science">Email</a>
@@ -378,15 +379,37 @@
 
       <p>This project is funded by an <strong>Emergent Ventures</strong> grant (Mercatus Center, George Mason University) — an unusually trusting kind of support for an independent researcher without institutional backing or a laboratory. Beyond the funding itself, the wider Emergent Ventures community's willingness to engage with early, unfinished, sometimes wrong work has shaped how this project is run in the open — corrections published alongside results, not smoothed over. Thank you to the fund and to that community.</p>
 
-      <p>The Whole-Life Dynamics project above exists because <strong>FinalSpark</strong> granted direct access to real, continuous organoid recordings through their Neuroplatform — data an independent researcher has no other way to obtain. A subscription agreement is now in place for live, closed-loop sessions on that same platform: the word-length (organoid-oi), threat-detection (loom-oi), and simplest-categorical-task (category00) experiments on this page are built and verified in simulation, and the next step is running them on real tissue.</p>
+      <p>The Whole-Life Dynamics project above exists because <strong>FinalSpark</strong> granted direct access to real, continuous organoid recordings through their Neuroplatform — data an independent researcher has no other way to obtain. A subscription agreement is now in place for live, closed-loop sessions on that same platform.</p>
 
-      <p><strong>category00</strong> is a pre-registered hardware-readiness package — its hypothesis and decision rule were written down before any hardware-facing code existed, specifically so a real-tissue result can't be reinterpreted after the fact. That experiment has not yet been run on real tissue; this page will be updated once it has.</p>
+      <p>As of September 1, 2026, this project is running its first real-tissue sessions: the word-length (organoid-oi), threat-detection (loom-oi), and simplest-categorical-task (category00) experiments above, previously built and verified in simulation only, are now in direct, live contact with real organoid cultures. Each experiment follows the same sequence on real tissue as it did in simulation: a cheap calibration check first — confirming a signal is genuinely separable from noise on that specific culture before any further session time is spent — then a staged seed-qualification screen, then the full closed-loop run. Reward and penalty are delivered as distinct electrical stimulation patterns on a dedicated electrode, a direct translation of this project's own simulated reward design rather than a chemical or optogenetic method.</p>
+
+      <p><strong>category00</strong> carries the most open question of the three: whether the null result found in simulation reflects a fact about the learning rule at this scale, or an artifact of the simulation's own simplifications. Its hypotheses and decision rule were written down before any hardware-facing code existed, specifically so a real-tissue result can't be reinterpreted after the fact.</p>
       <div class="proj-link"><a href="https://doi.org/10.5281/zenodo.21966109">doi.org/10.5281/zenodo.21966109</a> &nbsp;·&nbsp; <a href="https://github.com/Metin1558/Category00">github.com/Metin1558/Category00</a></div>
+    </section>
+
+    <!-- ============ REAL-TISSUE EXPERIMENTS ============ -->
+    <section id="real-tissue">
+      <div class="eyebrow"><span class="big-n">8</span> Real-Tissue Experiments</div>
+      <h2>Touching real tissue.</h2>
+
+      <p>As of September 1, 2026, this project is in direct, live contact with real organoid cultures for the first time. Everything on this page before this point — every dose-response curve, every calibration figure, every qualified-seed list — was produced in simulation. That work was never presented as more than that, and it wasn't wasted: it is the reason the first real session could begin with working code, a known set of failure modes already found and fixed, and a specific question for each experiment, rather than a blank notebook.</p>
+
+      <p>The path from here follows the same sequence for each of the three experiments, deliberately unchanged from how it worked in simulation:</p>
+
+      <p><strong>1. Calibration first.</strong> Before any training, a short, cheap check confirms whether a signal is genuinely separable from a given culture's own baseline noise — the same discipline that found loom-oi's calm/threat overlap and category00's null result in simulation. A real culture's baseline is its own thing, not a simulated organoid's; this step exists specifically because that can't be assumed.</p>
+
+      <p><strong>2. Seed and culture qualification.</strong> Not every culture — like not every random initialization in simulation — will turn out to support a reliable readout. A staged screen (untrained separability, trained accuracy, a held-out or repeated check) decides which cultures are trusted before any full run.</p>
+
+      <p><strong>3. The full closed-loop run.</strong> Training and, for organoid-oi and loom-oi, the live demonstration itself. Reward and penalty are delivered as distinct electrical stimulation patterns on a dedicated electrode — a direct translation of this project's own simulated reward design, adapted after learning that UV-uncaging, this project's original assumption, is not part of the standard access tier. That single substitution is a small, honest example of what this phase of the project actually looks like: real constraints, found and worked around, not assumed away.</p>
+
+      <p>category00 carries the most genuinely open question of the three. Its simulation result was a clean null — no signal, at any tested configuration. Whether that holds on real tissue, or whether it was an artifact of this project's own simplified simulation model, is not yet known by anyone, including the author. Its hypotheses and decision rule were fixed in writing before this phase began, specifically so that whichever answer comes back can't be reinterpreted after the fact to fit a preferred outcome.</p>
+
+      <p>In keeping with this project's practice throughout, no synthesis, paper, or public claim about outcomes will be written until data collection across all three experiments is complete. This section will not be updated piecemeal as partial results come in — the next real update here is the result, not a progress note.</p>
     </section>
 
     <!-- ============ ABOUT ============ -->
     <section id="about">
-      <div class="eyebrow"><span class="big-n">8</span> About</div>
+      <div class="eyebrow"><span class="big-n">9</span> About</div>
       <h2>Independent, by necessity and by choice.</h2>
       <p>I work without a laboratory and without formal academic affiliation — an independent scientist using public datasets (DANDI Archive) and direct data access granted by research platforms. Based in Aliağa, İzmir, Turkey.</p>
 
@@ -404,6 +427,7 @@
         <a href="https://github.com/Metin1558">github.com/Metin1558 <span>code</span></a>
         <a href="https://scholar.google.com/citations?user=chG4PiMAAAAJ">Google Scholar <span>citations</span></a>
         <a href="https://www.linkedin.com/in/metin-metin-a80b34410">LinkedIn <span>profile</span></a>
+        <a href="https://substack.com/@wetwarenotes">Wetware Notes <span>blog</span></a>
       </div>
     </section>
 
