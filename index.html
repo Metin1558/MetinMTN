@@ -215,12 +215,10 @@
       <a href="#overview"><span class="num">1</span>Overview</a>
       <a href="#formation"><span class="num">2</span>How an Organoid Forms</a>
       <a href="#projects"><span class="num">3</span>Projects</a>
-      <a href="#loom-oi"><span class="num">4</span>loom-oi, in detail</a>
-      <a href="#organoid-oi"><span class="num">5</span>organoid-oi, in detail</a>
-      <a href="#ethics"><span class="num">6</span>Ethics</a>
-      <a href="#support"><span class="num">7</span>Support</a>
-      <a href="#real-tissue"><span class="num">8</span>Real-Tissue Experiments</a>
-      <a href="#about"><span class="num">9</span>About</a>
+      <a href="#real-experiments"><span class="num">4</span>Live on Real Tissue</a>
+      <a href="#ethics"><span class="num">5</span>Ethics</a>
+      <a href="#support"><span class="num">6</span>Support</a>
+      <a href="#about"><span class="num">7</span>About</a>
     </nav>
     <div class="rail-foot">
       <a href="mailto:metinmtn@metin.science">Email</a>
@@ -284,7 +282,7 @@
 
     <!-- ============ PROJECTS ============ -->
     <section id="projects">
-      <div class="eyebrow"><span class="big-n">3</span> Five Technical Projects, In Sequence</div>
+      <div class="eyebrow"><span class="big-n">3</span> Three Technical Projects, In Sequence</div>
       <h2>Reading, shaping, and questioning the signal.</h2>
 
       <div class="proj">
@@ -295,75 +293,43 @@
       </div>
 
       <div class="proj">
-        <span class="proj-num">3.2 — Shaping the signal</span>
-        <div class="proj-title">organoid-oi</div>
-        <div class="proj-desc">Reading activity reliably opens a second question: can an organoid's network be shaped — not just observed, but nudged toward a particular pattern through reward and penalty, the way a developing brain learns from consequence? organoid-oi is a closed-loop simulation framework built to test that computationally before attempting it on real tissue, implementing Three-Factor spike-timing-dependent plasticity with reward and penalty delivered as biologically motivated current injection rather than externally forced weight updates. Its current version (v4) demonstrates a working, verified mechanism: an organoid's own firing intensity scales directly with input strength, and a reward-trained readout layer learns to read that signal correctly — reliably assembling words into a correct sentence by length, and correctly placing new words into an existing one. Full account below.</div>
-        <div class="proj-link"><a href="https://doi.org/10.5281/zenodo.21787184">doi.org/10.5281/zenodo.21787184</a></div>
-      </div>
-
-      <div class="proj">
-        <span class="proj-num">3.3 — A different signal, the same principle</span>
-        <div class="proj-title">loom-oi</div>
-        <div class="proj-desc">Across insects, fish, rodents, and primates, a rapidly expanding shape — the visual signature of something approaching — triggers an immediate, unlearned defensive response: the <em>looming stimulus</em>, processed by one of the most evolutionarily conserved circuits in the vertebrate brain. loom-oi drives an organoid's electrodes directly from a controlled clip's real, computed frame-to-frame expansion rate, and trains a reward-calibrated readout to call it "calm" or "threat" — the same reflexive principle as the word-length work, applied to a different physical quantity. Calibrating it surfaced a genuine failure mode: a naive control condition's own measurement noise exceeded a real, weak version of the signal being detected, defeating classification regardless of downstream tuning. Found via per-class diagnosis and fixed at its source, not patched around, the corrected system separates calm from threat cleanly and shows a real, non-degenerate gap against a standard digital model under an equal time budget.</div>
-        <div class="proj-link"><a href="https://doi.org/10.5281/zenodo.21935455">doi.org/10.5281/zenodo.21935455</a></div>
-      </div>
-
-      <div class="proj">
-        <span class="proj-num">3.4 — Watching a real culture live</span>
+        <span class="proj-num">3.2 — Watching a real culture live</span>
         <div class="proj-title">Whole-Life Dynamics</div>
         <div class="proj-desc">Closed-loop simulation is one kind of evidence; long, continuous recordings of a real culture are another. Through the FinalSpark Neuroplatform, a cloud-accessible recording system, two organoid cultures from the same neurosphere batch were tracked from their first recorded activity to the point each stopped firing — 6.4 days for one, 21.7 days for the other. Their baseline firing rates differed by roughly 35-fold despite the shared origin. One culture showed a large, otherwise unexplained rise in spike amplitude in the days before its activity ceased; a separate amplitude spike in the second culture was fully explained by a logged incubator door-opening event — a reminder that long-duration recordings need to be checked against equipment logs before any change in the data is read as biology.</div>
         <div class="proj-link"><a href="https://doi.org/10.5281/zenodo.20817496">doi.org/10.5281/zenodo.20817496</a></div>
       </div>
 
       <div class="proj">
-        <span class="proj-num">3.5 — Questioning the recording itself</span>
+        <span class="proj-num">3.3 — Questioning the recording itself</span>
         <div class="proj-title">UKH</div>
-        <div class="proj-desc">All three projects above assume the recording captures the organoid's activity in the first place. Mostly, it doesn't. A standard microelectrode array is flat; an organoid is not. Placed on a surface array, an organoid is read only where it touches the electrodes — its outer shell. A physics-based model of this geometry shows that a typical surface array reaches roughly 14% of the neurons in a 2&nbsp;mm organoid, and almost none of the inner 80% of its volume. UKH is a proposed three-layer recording architecture — a surface array, a flexible mesh layer grown into the tissue during development, and a central probe — designed to close that gap. The model shows it raising total coverage to roughly 41%, and, more importantly, making it possible to measure synchrony between an organoid's surface and its core for the first time. (Visualized above, in the toggle.)</div>
+        <div class="proj-desc">Both projects above assume the recording captures the organoid's activity in the first place. Mostly, it doesn't. A standard microelectrode array is flat; an organoid is not. Placed on a surface array, an organoid is read only where it touches the electrodes — its outer shell. A physics-based model of this geometry shows that a typical surface array reaches roughly 14% of the neurons in a 2&nbsp;mm organoid, and almost none of the inner 80% of its volume. UKH is a proposed three-layer recording architecture — a surface array, a flexible mesh layer grown into the tissue during development, and a central probe — designed to close that gap. The model shows it raising total coverage to roughly 41%, and, more importantly, making it possible to measure synchrony between an organoid's surface and its core for the first time. (Visualized above, in the toggle.)</div>
         <div class="proj-link"><a href="https://doi.org/10.5281/zenodo.20498735">doi.org/10.5281/zenodo.20498735</a></div>
       </div>
+
+      <p style="margin-top:32px;">Two more projects were built in this same sequence, aimed at a harder question than any of the three above: not just reading a signal, but shaping one, through reward, penalty, and an organoid's own timing-dependent plasticity. Both stayed in simulation long enough to become working, verified designs — and then both left simulation entirely. What happened when they reached a real culture is its own story, told next.</p>
     </section>
 
-    <!-- ============ loom-oi DETAIL ============ -->
-    <section id="loom-oi">
-      <div class="eyebrow"><span class="big-n">4</span> loom-oi</div>
-      <h2>A reflex borrowed from every visually-capable animal.</h2>
-      <p>A rapidly expanding shape — the visual signature of something approaching — triggers an immediate, unlearned defensive response across insects, fish, rodents, and primates alike: the <em>looming stimulus</em>. loom-oi drives a simulated organoid's electrodes directly from a clip's real, computed expansion rate, and trains a reward-calibrated readout to call it calm or threat, starting blind.</p>
-      <p>Calibrating it surfaced a genuine failure: the "calm" control condition's own measurement noise exceeded a real, weak threat signal — found only by checking per-class accuracy rather than an aggregate score, and fixed at its source. After correction, 5 of 15 random seeds pass a three-stage qualification screen, and under an equal real-time budget the organoid readout reaches 86% against a standard digital model's 100% — a genuine, informative comparison, not the degenerate 100%/100% an under-calibrated version produced.</p>
-      <div class="proj-link"><a href="https://doi.org/10.5281/zenodo.21935455">doi.org/10.5281/zenodo.21935455</a> &nbsp;·&nbsp; <a href="https://github.com/Metin1558/loom-oi">github.com/Metin1558/loom-oi</a></div>
-    </section>
+    <!-- ============ REAL-TISSUE, UNIFIED NARRATIVE ============ -->
+    <section id="real-experiments">
+      <div class="eyebrow"><span class="big-n">4</span> Live on Real Tissue</div>
+      <h2>The plan met the tissue, and the tissue talked back.</h2>
 
-    <!-- ============ organoid-oi v4 DETAIL ============ -->
-    <section id="organoid-oi">
-      <div class="eyebrow"><span class="big-n">5</span> organoid-oi, v4</div>
-      <h2>A working demonstration, verified end to end.</h2>
+      <p>Early September 2026 marked a shift this page can't fully keep up with: several experiments built and verified only in simulation — one shaping word order by length, one calling a visual clip calm or threatening, one testing the simplest categorical split conceivable — all moved onto a real, living organoid culture, accessed live through a cloud platform. Each one carried assumptions from simulation that the tissue immediately refused to honor.</p>
 
-      <p>organoid-oi's current version demonstrates a simple, honestly-named mechanism working reliably: a simulated organoid's own firing intensity scales directly with how strongly it is driven — a longer input produces more firing, a physical relationship that requires no training. What <em>is</em> trained, through Three-Factor spike-timing-dependent plasticity and a local reward-calibrated readout layer, is the ability to read that signal correctly, starting from a blind, uncalibrated state.</p>
+      <p>The first assumption to break was spatial. Of thirty-two electrodes, only seven ever showed real activity across repeated tests; the rest sat silent no matter what reached them. Every stimulation pattern built before that point had been aimed, in part, at electrodes that were never listening.</p>
 
-      <p>Applied to word length, the result is a system that takes a set of scrambled words and correctly assembles them into a sentence, and correctly places a newly introduced word into an existing one. We call this a <strong>reflexive</strong> demonstration, deliberately — the same word used by Kagan et al. for their organoid's closed-loop Pong behavior in 2022. The mechanism is simple and named plainly; the result is real.</p>
+      <p>The second was temporal, and larger. Left alone with no stimulation at all, the culture turned out to produce its own spontaneous, synchronized bursts — short, powerful, and entirely self-generated, arriving on average roughly every minute and a half. Weeks of inconsistent, direction-flipping results across every experiment on this page trace back to this one fact: a burst landing inside a short recording window can swamp anything an experiment is trying to measure. It's now detected and filtered before any result is trusted.</p>
 
-      <p>Three things were verified before this was called done. The dose-response relationship itself — word length against firing intensity, correlation +0.999 across eight test words, charted below. Readout calibration — accuracy rising from near-chance to reliable correct ordering as reward and penalty shape the decoder. And interface parity with real hardware: the system is built against a single method signature, implemented identically for simulation and for a live-tissue backend, so the same code runs on either — pending the API integration step that connects the second one.</p>
+      <p>Underneath both surprises sits one working mechanism: a single, isolated electrode pair, timed to fire a few milliseconds apart, produces a real and repeatable strengthening or weakening of the tissue's own response — the textbook signature of spike-timing-dependent plasticity, live, on tissue that had never been asked to do anything before. It doesn't yet generalize. The moment a second electrode pair joins in, whether trained at once or trained to share the same readout point, the effect disappears. Every multi-electrode task on this page — length, threat, category — has run into that same wall on real tissue and not yet gotten past it.</p>
 
-      <p>This version followed an earlier, rigorously negative attempt at a harder claim — categorical rather than reflexive learning, tested across several task designs and difficulty levels, none of which held up under repeated verification. That result was published in full rather than quietly reworked, and it directly motivated the smaller, verified claim reported here. The six measurement defects found along the way — and the general failure pattern they share — are documented separately as a standalone methodological contribution: <a href="https://doi.org/10.5281/zenodo.21892103">doi.org/10.5281/zenodo.21892103</a>.</p>
+      <p>The open question being tested right now, under the working name <em>organoid-coffee</em>, follows directly from that wall: whether the same tissue can hold two of these single-pair connections independently, without training one erasing the other — the kind of catastrophic forgetting that has always been a known weakness of artificial neural networks. No result exists yet either way, and none will be claimed here until it does.</p>
 
-      <div class="split" style="margin-top:36px; align-items:start;">
-        <div>
-          <p style="margin-bottom:0;">The current version's claim rests on a single, checkable physical fact: an organoid's firing intensity scales with how strongly it is driven. Word length was used as that drive — a longer word activates more electrodes, produces more spikes — and the relationship was measured directly, not assumed. Eight words of increasing length were each presented five times to an untrained population; the chart is that measurement, real data, not illustrative.</p>
-        </div>
-        <div class="viz-card">
-          <canvas id="attrib-viz" width="300" height="200"></canvas>
-          <div class="stat-line">
-            <div><div class="n" id="stat-gap">+0.999</div><div class="l">CORRELATION</div></div>
-            <div><div class="n" id="stat-trial">8 / 8</div><div class="l">MONOTONIC PAIRS</div></div>
-          </div>
-        </div>
-      </div>
-
-      <div class="proj-link" style="margin-top:28px;"><a href="https://doi.org/10.5281/zenodo.21787184">doi.org/10.5281/zenodo.21787184</a></div>
+      <p>Nothing above is a paper, and nothing above has a DOI — the earlier claims once written for this project no longer match what's actually on the bench, and reissuing them here before the real-tissue picture settles would misrepresent both. This is a running log of a very young project finding its actual constraints one live session at a time — kept by one scientist, working alone, from İzmir, still closer to the beginning of this than the end of it.</p>
     </section>
 
     <!-- ============ ETHICS ============ -->
     <section id="ethics">
-      <div class="eyebrow"><span class="big-n">6</span> A Fifth Contribution: Ethics</div>
+      <div class="eyebrow"><span class="big-n">5</span> A Fifth Contribution: Ethics</div>
       <h2>Functional provenance stratification.</h2>
       <p>The organoid intelligence ethics literature has developed along three largely separate axes: consciousness and moral status, informed consent and the right to withdraw, and the commodification of donated biological material. Each is reasonably well documented on its own. None directly names the following scenario.</p>
       <div class="ethics-quote">If donor cell lines are catalogued and selected according to functional or computational performance metrics — learning rate, network efficiency, signal-to-noise ratio, metabolic resilience — rather than identity or disease status, this creates an implicit market-value hierarchy within the donor population.</div>
@@ -374,42 +340,17 @@
 
     <!-- ============ SUPPORT ============ -->
     <section id="support">
-      <div class="eyebrow"><span class="big-n">7</span> Support</div>
+      <div class="eyebrow"><span class="big-n">6</span> Support</div>
       <h2>This work doesn't happen alone.</h2>
 
       <p>This project is funded by an <strong>Emergent Ventures</strong> grant (Mercatus Center, George Mason University) — an unusually trusting kind of support for an independent researcher without institutional backing or a laboratory. Beyond the funding itself, the wider Emergent Ventures community's willingness to engage with early, unfinished, sometimes wrong work has shaped how this project is run in the open — corrections published alongside results, not smoothed over. Thank you to the fund and to that community.</p>
 
-      <p>The Whole-Life Dynamics project above exists because <strong>FinalSpark</strong> granted direct access to real, continuous organoid recordings through their Neuroplatform — data an independent researcher has no other way to obtain. A subscription agreement is now in place for live, closed-loop sessions on that same platform.</p>
-
-      <p>As of September 1, 2026, this project is running its first real-tissue sessions: the word-length (organoid-oi), threat-detection (loom-oi), and simplest-categorical-task (category00) experiments above, previously built and verified in simulation only, are now in direct, live contact with real organoid cultures. Each experiment follows the same sequence on real tissue as it did in simulation: a cheap calibration check first — confirming a signal is genuinely separable from noise on that specific culture before any further session time is spent — then a staged seed-qualification screen, then the full closed-loop run. Reward and penalty are delivered as distinct electrical stimulation patterns on a dedicated electrode, a direct translation of this project's own simulated reward design rather than a chemical or optogenetic method.</p>
-
-      <p><strong>category00</strong> carries the most open question of the three: whether the null result found in simulation reflects a fact about the learning rule at this scale, or an artifact of the simulation's own simplifications. Its hypotheses and decision rule were written down before any hardware-facing code existed, specifically so a real-tissue result can't be reinterpreted after the fact.</p>
-      <div class="proj-link"><a href="https://doi.org/10.5281/zenodo.21966109">doi.org/10.5281/zenodo.21966109</a> &nbsp;·&nbsp; <a href="https://github.com/Metin1558/Category00">github.com/Metin1558/Category00</a></div>
-    </section>
-
-    <!-- ============ REAL-TISSUE EXPERIMENTS ============ -->
-    <section id="real-tissue">
-      <div class="eyebrow"><span class="big-n">8</span> Real-Tissue Experiments</div>
-      <h2>Touching real tissue.</h2>
-
-      <p>As of September 1, 2026, this project is in direct, live contact with real organoid cultures for the first time. Everything on this page before this point — every dose-response curve, every calibration figure, every qualified-seed list — was produced in simulation. That work was never presented as more than that, and it wasn't wasted: it is the reason the first real session could begin with working code, a known set of failure modes already found and fixed, and a specific question for each experiment, rather than a blank notebook.</p>
-
-      <p>The path from here follows the same sequence for each of the three experiments, deliberately unchanged from how it worked in simulation:</p>
-
-      <p><strong>1. Calibration first.</strong> Before any training, a short, cheap check confirms whether a signal is genuinely separable from a given culture's own baseline noise — the same discipline that found loom-oi's calm/threat overlap and category00's null result in simulation. A real culture's baseline is its own thing, not a simulated organoid's; this step exists specifically because that can't be assumed.</p>
-
-      <p><strong>2. Seed and culture qualification.</strong> Not every culture — like not every random initialization in simulation — will turn out to support a reliable readout. A staged screen (untrained separability, trained accuracy, a held-out or repeated check) decides which cultures are trusted before any full run.</p>
-
-      <p><strong>3. The full closed-loop run.</strong> Training and, for organoid-oi and loom-oi, the live demonstration itself. Reward and penalty are delivered as distinct electrical stimulation patterns on a dedicated electrode — a direct translation of this project's own simulated reward design, adapted after learning that UV-uncaging, this project's original assumption, is not part of the standard access tier. That single substitution is a small, honest example of what this phase of the project actually looks like: real constraints, found and worked around, not assumed away.</p>
-
-      <p>category00 carries the most genuinely open question of the three. Its simulation result was a clean null — no signal, at any tested configuration. Whether that holds on real tissue, or whether it was an artifact of this project's own simplified simulation model, is not yet known by anyone, including the author. Its hypotheses and decision rule were fixed in writing before this phase began, specifically so that whichever answer comes back can't be reinterpreted after the fact to fit a preferred outcome.</p>
-
-      <p>In keeping with this project's practice throughout, no synthesis, paper, or public claim about outcomes will be written until data collection across all three experiments is complete. This section will not be updated piecemeal as partial results come in — the next real update here is the result, not a progress note.</p>
+      <p>The Whole-Life Dynamics project above exists because <strong>FinalSpark</strong> granted direct access to real, continuous organoid recordings through their Neuroplatform — data an independent researcher has no other way to obtain. A subscription agreement is now in place for live, closed-loop sessions on that same platform, and it's what makes the work described further down this page possible at all.</p>
     </section>
 
     <!-- ============ ABOUT ============ -->
     <section id="about">
-      <div class="eyebrow"><span class="big-n">9</span> About</div>
+      <div class="eyebrow"><span class="big-n">7</span> About</div>
       <h2>Independent, by necessity and by choice.</h2>
       <p>I work without a laboratory and without formal academic affiliation — an independent scientist using public datasets (DANDI Archive) and direct data access granted by research platforms. Based in Aliağa, İzmir, Turkey.</p>
 
@@ -621,69 +562,6 @@
   bU.addEventListener('click', ()=>{ mode='ukh'; bU.classList.add('active'); bS.classList.remove('active'); updateStats(); });
 })();
 
-/* ---------------- organoid-oi dose-response viz ---------------- */
-(function(){
-  const canvas = document.getElementById('attrib-viz');
-  if(!canvas) return;
-  const ctx = canvas.getContext('2d');
-  const W = canvas.width, H = canvas.height;
-
-  const points = [
-    {len:1, fire:2.4}, {len:2, fire:5.2}, {len:3, fire:7.4}, {len:4, fire:9.8},
-    {len:5, fire:12.6}, {len:6, fire:14.8}, {len:7, fire:17.6}, {len:8, fire:20.8},
-  ];
-
-  let reveal = 0;
-
-  function draw(){
-    ctx.clearRect(0,0,W,H);
-    const padL=34, padR=14, padT=14, padB=26;
-    const x0=padL, x1=W-padR, y0=padT, y1=H-padB;
-    const lenMax = 9, fireMax = 24;
-    const xv = l => x0 + (l/lenMax)*(x1-x0);
-    const yv = f => y1 - (f/fireMax)*(y1-y0);
-
-    ctx.strokeStyle = 'rgba(24,24,24,0.09)'; ctx.lineWidth = 1;
-    [0,6,12,18,24].forEach(f=>{
-      const y = Math.round(yv(f))+0.5;
-      ctx.beginPath(); ctx.moveTo(x0,y); ctx.lineTo(x1,y); ctx.stroke();
-    });
-    ctx.fillStyle = 'rgba(24,24,24,0.4)'; ctx.font = "italic 10px 'Source Serif 4',serif";
-    ctx.textAlign = 'left'; ctx.fillText('firing intensity', x0+2, y0-2);
-    ctx.textAlign = 'right'; ctx.fillText('word length →', x1, y1+18);
-
-    const n = Math.max(1, Math.min(points.length, Math.ceil(reveal)));
-
-    const N = points.length;
-    const sx = points.reduce((a,p)=>a+p.len,0), sy = points.reduce((a,p)=>a+p.fire,0);
-    const sxy = points.reduce((a,p)=>a+p.len*p.fire,0), sxx = points.reduce((a,p)=>a+p.len*p.len,0);
-    const slope = (N*sxy - sx*sy) / (N*sxx - sx*sx);
-    const intercept = (sy - slope*sx) / N;
-    ctx.setLineDash([3,4]); ctx.strokeStyle = 'rgba(24,24,24,0.25)'; ctx.lineWidth = 1;
-    ctx.beginPath(); ctx.moveTo(xv(0), yv(intercept)); ctx.lineTo(xv(lenMax), yv(intercept+slope*lenMax)); ctx.stroke();
-    ctx.setLineDash([]);
-
-    ctx.beginPath();
-    for(let i=0;i<n;i++){ const p=points[i]; const x=xv(p.len), y=yv(p.fire); i? ctx.lineTo(x,y):ctx.moveTo(x,y); }
-    ctx.strokeStyle = '#0E7C7B'; ctx.lineWidth = 2.2; ctx.lineJoin='round'; ctx.stroke();
-    for(let i=0;i<n;i++){
-      const p=points[i];
-      ctx.beginPath(); ctx.arc(xv(p.len), yv(p.fire), 3.4, 0, 7);
-      ctx.fillStyle = '#0E7C7B'; ctx.fill();
-    }
-
-    document.getElementById('stat-gap').textContent = '+0.999';
-    document.getElementById('stat-trial').textContent = n + ' / ' + points.length;
-  }
-
-  function loop(){
-    reveal += 0.045;
-    if(reveal > points.length + 14) reveal = 0;
-    draw();
-    requestAnimationFrame(loop);
-  }
-  loop();
-})();
 </script>
 
 </body>
