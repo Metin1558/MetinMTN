@@ -112,6 +112,7 @@
   .proj-title{ font-family:'Source Serif 4', serif; font-size:22px; font-weight:600; margin-bottom:12px; }
   .proj-desc{ font-size:15.5px; line-height:1.75; color:var(--dim); max-width:66ch; margin-bottom:14px; }
   .proj-link{ font-size:13px; color:var(--dim2); }
+
   .proj-link a{ color:var(--accent); text-decoration:none; border-bottom:1px solid var(--accent-soft); }
   .proj-link a:hover{ border-color:var(--accent); }
   .proj-bridge{ color:var(--dim2); font-style:italic; font-size:14px; margin-top:12px; }
@@ -314,17 +315,21 @@
       <div class="eyebrow"><span class="big-n">4</span> Live on Real Tissue</div>
       <h2>The plan met the tissue, and the tissue talked back.</h2>
 
-      <p>Early September 2026 marked a shift this page can't fully keep up with: several experiments built and verified only in simulation — one shaping word order by length, one calling a visual clip calm or threatening, one testing the simplest categorical split conceivable — all moved onto a real, living organoid culture, accessed live through a cloud platform. Each one carried assumptions from simulation, and real tissue turned out to have its own terms for almost every one of them — which is, itself, the interesting part.</p>
+      <p>Early September 2026 marked a shift this page can't fully keep up with: several experiments built and verified only in simulation: one shaping word order by length, one calling a visual clip calm or threatening, one testing the simplest categorical split conceivable, all moved onto a real, living organoid culture, accessed live through a cloud platform. Each one carried assumptions from simulation, and real tissue turned out to have its own terms for almost every one of them, which is, itself, the interesting part.</p>
 
-      <p>The first thing to learn was spatial. Of thirty-two electrodes, only seven ever showed real activity across repeated tests. Once that map was known, every stimulation pattern going forward could actually reach tissue that was listening — a small correction with a large effect on everything after it.</p>
+      <p>The first thing to learn was spatial. Of thirty-two electrodes, only seven ever showed real activity across repeated tests. Once that map was known, every stimulation pattern going forward could actually reach tissue that was listening, a small correction with a large effect on everything after it.</p>
 
-      <p>The second was temporal, and it explained a lot at once. Left alone with no stimulation at all, the culture turned out to produce its own spontaneous, synchronized bursts — short, powerful, and entirely self-generated, arriving on average roughly every minute and a half. Weeks of inconsistent, direction-flipping results across every experiment on this page trace back to this one fact: a burst landing inside a short recording window can swamp anything an experiment is trying to measure. Finding it turned a pile of confusing numbers into one clean, well-characterized phenomenon — now detected and filtered before any result is trusted.</p>
+      <p>The second was temporal, and it explained a lot at once. Left alone with no stimulation at all, the culture turned out to produce its own spontaneous, synchronized bursts: short, powerful, entirely self-generated, arriving on average roughly every minute and a half. Weeks of inconsistent, direction-flipping results across every experiment on this page trace back to this one fact: a burst landing inside a short recording window can swamp anything an experiment is trying to measure. Finding it turned a pile of confusing numbers into one clean, well-characterized phenomenon, now detected and filtered before any result is trusted.</p>
 
-      <p>With that in place, one mechanism started working cleanly: a single, isolated electrode pair, timed to fire a few milliseconds apart, produces a real and repeatable strengthening or weakening of the tissue's own response — the textbook signature of spike-timing-dependent plasticity, live, on tissue that had never been asked to do anything before. That's a genuine result on real tissue, not a simulation. What it hasn't done yet is scale past one pair at a time — length, threat, and category, the three multi-electrode tasks on this page, are the next thing this needs to reach.</p>
+      <p>With that in place, the work turned to the question underneath all of it: can this tissue be trained? A single isolated electrode pair, fired a few milliseconds apart in the order that classical spike-timing-dependent plasticity says should strengthen a connection, produced exactly the expected result at first. Forward pairing raised the response, reverse pairing lowered it, symmetric and clean. The obvious next move was to test it harder rather than write it up. Larger samples, a drift-corrected measure that separates a pathway-specific change from a tissue-wide one, two independent cultures, three electrode pairs. Under those conditions the effect did not hold. What the small samples had shown was a real pattern in the data and not a real property of the tissue, and knowing which of those you have is the whole job.</p>
 
-      <p>What comes next follows the same discipline as everything above it: rather than assuming a working single-pair mechanism will simply scale up on its own, each next step — a second connection alongside the first, a longer time window, a wider set of electrodes — gets checked before it's trusted, not after. The goal was never to arrive at one dramatic result. It's to find out, honestly and one verified step at a time, what this kind of living tissue can actually do that's worth doing — not what it's assumed to do, and not what would make the best headline. Whatever the next confirmed step turns out to be, it gets added here once it's confirmed, not before.</p>
+      <p>That answer is worth more than the one that was being hoped for. It comes with a measured upper bound, a documented protocol, and a verification script that recomputes every number in it from the raw file. The same campaign established four other things outright: how sparse functional electrode coverage actually is and how much it changes between cultures, how often and how hard this tissue bursts on its own, that those bursts carry no power-law scaling in their magnitudes while their timing is strongly clustered, and that baseline activity can more than double across a single night with nobody touching it.</p>
 
-      <p>Nothing above is a paper, and nothing above has a DOI — the earlier claims once written for this project no longer match what's actually on the bench, and reissuing them here before the real-tissue picture settles would misrepresent both. This is a running log of a very young project finding its actual constraints one live session at a time, kept by one scientist, working alone, from İzmir — each surprise so far turning into the next thing worth trying, not a reason to stop.</p>
+      <p>All of it is now written up, with the raw data and the code, including two errors found in the author's own analysis by re-deriving every reported number from scratch. Both had favoured the initial interpretation, and both were corrected before publication.</p>
+
+      <div class="proj-link"><a href="paper.pdf" download>Measuring Before Claiming (PDF, 14 pages)</a></div>
+
+      <p style="margin-top:34px;">This is one researcher, working alone from İzmir, on two cultures accessed through a commercial platform: a case study, not a general law, and it says so on every page. What it does establish is what a platform hands you and what it doesn't: you get a connection and an API, and everything downstream of that is yours to measure before you are entitled to claim anything at all.</p>
     </section>
 
     <!-- ============ ETHICS ============ -->
@@ -566,4 +571,3 @@
 
 </body>
 </html>
-
